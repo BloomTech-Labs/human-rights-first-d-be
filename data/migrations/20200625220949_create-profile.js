@@ -1,36 +1,41 @@
-
 exports.up = (knex) => {
   return knex.schema
     .raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"')
-    .createTable('profiles', table => {
+    .createTable('profiles', (table) => {
       table.string('id').notNullable().unique().primary();
       table.string('email');
       table.string('name');
       table.string('avatarUrl');
       table.timestamps(true, true);
     })
-    .createTable('incidents', table => {
-      table.increments()
-      table.integer('date_posted').notNullable();
+    .createTable('incidents', (table) => {
+      table.increments();
+      table.string('date').notNullable();
       table.string('text', 1000).notNullable();
       table.float('latitude').notNullable();
       table.float('longitude').notNullable();
+      table.boolean('lethal', 255);
+      table.string('race_victim', 255);
+      table.string('race_police_officer', 255);
+      table.string('victim_gender', 255);
+      table.string('police_officer_gender', 255);
     })
-    .createTable('types', table => {
+    .createTable('types', (table) => {
       table.increments();
       table.string('type').notNullable();
     })
-    .createTable('saved_incidents', table => {
+    .createTable('saved_incidents', (table) => {
       table.increments();
       table.integer('incident_id').references('incidents.id').notNullable();
       table.string('profile_id').references('profiles.id').notNullable();
     })
-    .createTable('sources', table => {
+    .createTable('sources', (table) => {
       table.increments();
       table.integer('incident_id').references('incidents.id').notNullable();
       table.string('link', 1000).notNullable();
+      table.string('origin', 255);
     })
-    .createTable('incidents_type', table => {
+    .createTable('incidents_type', (table) => {
       table.increments();
       table.integer('incident_id').references('incidents.id').notNullable();
       table.integer('type_id').references('types.id').notNullable();
@@ -38,10 +43,10 @@ exports.up = (knex) => {
 };
 exports.down = (knex) => {
   return knex.schema
-  .dropTableIfExists('incidents_type')
-  .dropTableIfExists('sources')
-  .dropTableIfExists('saved_incidents')
-  .dropTableIfExists('types')
-  .dropTableIfExists('incidents')
-  .dropTableIfExists('profiles');
+    .dropTableIfExists('incidents_type')
+    .dropTableIfExists('sources')
+    .dropTableIfExists('saved_incidents')
+    .dropTableIfExists('types')
+    .dropTableIfExists('incidents')
+    .dropTableIfExists('profiles');
 };
