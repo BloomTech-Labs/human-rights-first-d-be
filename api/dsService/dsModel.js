@@ -3,9 +3,12 @@ const dsConfig = require('../../config/dsConfig');
 const dsClient = axios.create(dsConfig);
 
 
-//Placeholder 
-const findAll = () => {
-  return all incidents
-}
+const getPrediction = (x1, x2, x3) => {
+  return dsClient.post('/predict', { x1, x2, x3 });
+};
 
-module.exports = { findAll };
+// const findAll = () => {
+//   return all incidents
+// }
+
+module.exports = {  getPrediction };
