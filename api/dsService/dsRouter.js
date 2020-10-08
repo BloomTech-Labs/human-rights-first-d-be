@@ -19,9 +19,17 @@ router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
     });
 });
 
-// router.get('/incidents', function (req, res) {
-//   //gets all incidents
-// });
+router.get('/incidents', function (req, res) {
+  dsModel
+    .getData()
+    .then((response) => {
+      axios.post('https://labs27-d-hrf-api.herokuapp.com/incidents/addIncidents', response.data)
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json({message: error, error_found: true});
+    })
+});
 
 // router.get('/incidents/:id', function (req, res) {
 //   //gets specific incident
