@@ -1,8 +1,8 @@
 const express = require('express');
-const axios = require('axios');
 const router = express.Router();
 const dsModel = require('./dsModel');
 const authRequired = require('../middleware/authRequired');
+const Incidents = require('../incidentsService/incidentsModel');
 
 router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
   const x1 = String(req.params.x1);
@@ -24,13 +24,22 @@ router.get('/incidents', function (req, res) {
   dsModel
     .getData()
     .then((response) => {
-      const obj = JSON.parse(response.data);
-      console.log(obj);
-      axios.post(
-        // 'https://labs27-d-hrf-api.herokuapp.com/incidents/addIncidents',
-        'http://localhost:8000/incidents/addIncidents',
-        obj
-      );
+      const incidentsArray = JSON.parse(response.data);
+
+      const incidentsMap = incidentsArray.map((incident) => ({
+        id: incident.id,
+        state: incident.state,
+        city: incident.city,
+      }));
+
+      Incidents.addIncidents(incidentsMap)
+        .then((arr) => {
+          console.log('arr', arr);
+          res.status(201).json({ message: 'incidents successfully added' });
+        })
+        .catch((error) => {
+          res.status(500).json({ message: 'add incidents failed' });
+        });
     })
     .catch((error) => {
       console.log(error);
@@ -42,15 +51,13 @@ router.get('/proxy', function (req, res) {
   dsModel
     .getData()
     .then((response) => {
-      let info = JSON.parse(response.data);
+      let info = JSON.parse(response);
+      console.log(info);
       res.status(200).json(info);
     })
     .catch((error) => {
       res.status(500).json(error);
     });
 });
-// router.get('/incidents/:id', function (req, res) {
-//   //gets specific incident
-// });
 
 module.exports = router;
