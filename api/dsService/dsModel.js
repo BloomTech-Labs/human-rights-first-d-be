@@ -11,5 +11,5 @@ const getPrediction = (x1, x2, x3) => {
 // }
 const getData = () => {
   return dsClient.get('/getdata');
-}
+};
 module.exports = { getPrediction, getData };
