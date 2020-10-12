@@ -9,7 +9,7 @@ exports.up = (knex) => {
       table.timestamps(true, true);
     })
     .createTable('incidents', (table) => {
-      table.string('table_id').notNullable().unique().primary();
+      table.increments('table_id');
       table.string('id').notNullable();
       table.string('state');
       table.string('city');
