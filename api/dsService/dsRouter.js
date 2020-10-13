@@ -34,17 +34,25 @@ router.get('/incidents', function (req, res) {
         long: incident.geocoding.long,
       }));
 
-      const linksMap = incidentsArray.map((incident) => ({
-        incident_id: incident.id,
-        link: incident.links,
-      }));
-      // {incident_id:"", link: ""}
+      const linksMap = incidentsArray.map((incident) => {
+        // console.log('incident links', incident.links)
+        const linkArray = incident.links.map((link) => ({
+          incident_id: incident.id,
+          link: link
+        }))
+        return linkArray[0]
+      })
+
       console.log('linksMap:', linksMap)
 
       Incidents.addIncidents(incidentsMap)
         .then((arr) => {
-          // console.log('arr', arr);
-          res.status(201).json({ message: 'incidents successfully added' });
+          console.log('arr', arr);
+          Incidents.addSources(linksMap)
+            .then((response) => {
+              console.log('src:', response)
+              res.status(201).json({message: "Incidents and sources inserted :D"})
+            })
         })
         .catch((error) => {
           res.status(500).json({ message: 'add incidents failed', error: error });
