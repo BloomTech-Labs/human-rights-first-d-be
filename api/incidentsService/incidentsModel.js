@@ -2,16 +2,17 @@ const db = require('../../data/db-config');
 
 module.exports = {
   addIncidents,
+  addSources,
   findIncidentById,
 };
 
 function addIncidents(arr) {
-  return db('incidents').insert(arr);
+    return db('incidents').insert(arr);
 }
 
-// async function addSources(obj){
-//     const[id] = await db('sources').insert(obj).returning("id")
-// }
+function addSources(arr1){
+    return db('sources').insert(arr1);
+}
 
 async function findIncidentById(id) {
   const incident = await db('incidents').where({ id }).first();
