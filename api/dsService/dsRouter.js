@@ -30,29 +30,46 @@ router.get('/incidents', function (req, res) {
         id: incident.id,
         state: incident.state,
         city: incident.city,
+        lat: incident.geocoding.lat,
+        long: incident.geocoding.long,
       }));
+
+      const linksMap = incidentsArray.map((incident) => ({
+        incident_id: incident.id,
+        link: incident.links,
+      }));
+      // {incident_id:"", link: ""}
+      console.log('linksMap:', linksMap)
 
       Incidents.addIncidents(incidentsMap)
         .then((arr) => {
-          console.log('arr', arr);
+          // console.log('arr', arr);
           res.status(201).json({ message: 'incidents successfully added' });
         })
         .catch((error) => {
-          res.status(500).json({ message: 'add incidents failed' });
+          res.status(500).json({ message: 'add incidents failed', error: error });
         });
     })
     .catch((error) => {
-      console.log(error);
+      // console.log(error);
       res.status(500).json({ message: error, error_found: true });
     });
+});
+
+router.get('/incidents/:id', function (req, res) {
+  const { id } = req.params;
+
+  Incidents.findIncidentById(id).then((evt) => {
+    res.status(200).json(evt);
+  });
 });
 
 router.get('/proxy', function (req, res) {
   dsModel
     .getData()
     .then((response) => {
-      let info = JSON.parse(response);
-      console.log(info);
+      let info = JSON.parse(response.data);
+      // console.log(info);
       res.status(200).json(info);
     })
     .catch((error) => {
