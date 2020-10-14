@@ -7,11 +7,11 @@ module.exports = {
 };
 
 function addIncidents(arr) {
-    return db('incidents').insert(arr);
+  return db('incidents').insert(arr);
 }
 
-function addSources(arr1){
-    return db('sources').insert(arr1);
+function addSources(arr1) {
+  return db('sources').insert(arr1);
 }
 
 async function findIncidentById(id) {

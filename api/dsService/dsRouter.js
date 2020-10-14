@@ -35,31 +35,29 @@ router.get('/incidents', function (req, res) {
       }));
 
       const linksMap = incidentsArray.map((incident) => {
-        // console.log('incident links', incident.links)
         const linkArray = incident.links.map((link) => ({
           incident_id: incident.id,
-          link: link
-        }))
-        return linkArray[0]
-      })
+          link: link,
+        }));
 
-      console.log('linksMap:', linksMap)
+        return linkArray;
+      });
 
       Incidents.addIncidents(incidentsMap)
-        .then((arr) => {
-          console.log('arr', arr);
-          Incidents.addSources(linksMap)
-            .then((response) => {
-              console.log('src:', response)
-              res.status(201).json({message: "Incidents and sources inserted :D"})
-            })
+        .then(() => {
+          Incidents.addSources(linksMap.flat()).then(() => {
+            res
+              .status(201)
+              .json({ message: 'Incidents and sources inserted :D' });
+          });
         })
         .catch((error) => {
-          res.status(500).json({ message: 'add incidents failed', error: error });
+          res
+            .status(500)
+            .json({ message: 'add incidents failed', error: error });
         });
     })
     .catch((error) => {
-      // console.log(error);
       res.status(500).json({ message: error, error_found: true });
     });
 });
@@ -67,9 +65,16 @@ router.get('/incidents', function (req, res) {
 router.get('/incidents/:id', function (req, res) {
   const { id } = req.params;
 
-  Incidents.findIncidentById(id).then((evt) => {
-    res.status(200).json(evt);
-  });
+  Incidents.findIncidentById(id)
+    .then((evt) => {
+      res.status(200).json(evt);
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: 'could not retrieve the requested incident',
+        error: error,
+      });
+    });
 });
 
 router.get('/proxy', function (req, res) {
@@ -77,7 +82,7 @@ router.get('/proxy', function (req, res) {
     .getData()
     .then((response) => {
       let info = JSON.parse(response.data);
-      // console.log(info);
+
       res.status(200).json(info);
     })
     .catch((error) => {

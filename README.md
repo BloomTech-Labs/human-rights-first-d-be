@@ -11,10 +11,7 @@
 4️⃣ Contributors
 🚫Add contributor info below, make sure add images and edit the social links for each member. Add to or delete these place-holders as needed
 
-Student 1	Student 2	Student 3	Student 4	Student 5
-				
-				
-				
+Student 1 Student 2 Student 3 Student 4 Student 5
 
 🚫 4️⃣ Optional examples of using images with links for your tech stack, make sure to change these to fit your project
 
@@ -76,19 +73,19 @@ In order for the app to function correctly, the user must set up their own envir
 
 🚫These are just examples, replace them with the specifics for your app
 
-*  PRAW_CLIENT_ID  - keys for Reddit API
-*  PRAW_CLIENT_SECRET - keys for Reddit API
-*  PRAW_USER_AGENT - keys for Reddit API
-*  TWEEPY_CONSUMER - keys for Twitter API
-*  TWEEPY_SECRET - keys for Twitter API
-*  TWEEPY_ACCESS - keys for Twitter API
-*  TWEEPY_ACCESS_SECRET - keys for Twitter API
-5️⃣ Content Licenses
-🚫For all content - images, icons, etc, use this table to document permission of use. Remove the two placeholders and add you content to this table
+- PRAW_CLIENT_ID - keys for Reddit API
+- PRAW_CLIENT_SECRET - keys for Reddit API
+- PRAW_USER_AGENT - keys for Reddit API
+- TWEEPY_CONSUMER - keys for Twitter API
+- TWEEPY_SECRET - keys for Twitter API
+- TWEEPY_ACCESS - keys for Twitter API
+- TWEEPY_ACCESS_SECRET - keys for Twitter API
+  5️⃣ Content Licenses
+  🚫For all content - images, icons, etc, use this table to document permission of use. Remove the two placeholders and add you content to this table
 
-Image Filename	Source / Creator	License
-doodles.png	Nicole Bennett	Creative Commons
-rings.svg	Sam Herbert	MIT
+Image Filename Source / Creator License
+doodles.png Nicole Bennett Creative Commons
+rings.svg Sam Herbert MIT
 4️⃣ Testing
 🚫Document what you used for testing and why
 
@@ -98,12 +95,12 @@ rings.svg	Sam Herbert	MIT
 Other Scripts
 🚫replace these examples with your own
 
-* typecheck - runs the TypeScript compiler
-* build - creates a build of the application
-* start - starts the production server after a build is created
-* test - runs tests in **tests** directory \* eject - copy the configuration files and dependencies into the project so you have full control over them
-Contributing
-When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
+- typecheck - runs the TypeScript compiler
+- build - creates a build of the application
+- start - starts the production server after a build is created
+- test - runs tests in **tests** directory \* eject - copy the configuration files and dependencies into the project so you have full control over them
+  Contributing
+  When contributing to this repository, please first discuss the change you wish to make via issue, email, or any other method with the owners of this repository before making a change.
 
 Please note we have a code of conduct. Please follow it in all your interactions with the project.
 
