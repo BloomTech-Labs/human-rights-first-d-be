@@ -44,8 +44,8 @@ router.get('/incidents', function (req, res) {
       });
 
       Incidents.addIncidents(incidentsMap)
-        .then((arr) => {
-          Incidents.addSources(linksMap.flat()).then((response) => {
+        .then(() => {
+          Incidents.addSources(linksMap.flat()).then(() => {
             res
               .status(201)
               .json({ message: 'Incidents and sources inserted :D' });
