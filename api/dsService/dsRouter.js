@@ -20,7 +20,7 @@ router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
     });
 });
 
-router.get('/incidents', function (req, res) {
+router.get('/populate', function (req, res) {
   dsModel
     .getData()
     .then((response) => {
