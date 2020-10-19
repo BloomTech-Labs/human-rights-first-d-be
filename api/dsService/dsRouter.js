@@ -21,60 +21,45 @@ router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
 });
 
 router.get('/incidents', function (req, res) {
-  dsModel
-    .getData()
-    .then((response) => {
-      const incidentsArray = JSON.parse(response.data);
-
-      const incidentsMap = incidentsArray.map((incident) => ({
-        id: incident.id,
-        state: incident.state,
-        city: incident.city,
-        lat: incident.geocoding.lat,
-        long: incident.geocoding.long,
-      }));
-
-      const linksMap = incidentsArray.map((incident) => {
-        const linkArray = incident.links.map((link) => ({
-          incident_id: incident.id,
-          link: link,
+    dsModel
+      .getData()
+      .then((response) => {
+        const incidentsArray = JSON.parse(response.data);
+  
+        const incidentsMap = incidentsArray.map((incident) => ({
+          id: incident.id,
+          state: incident.state,
+          city: incident.city,
+          lat: incident.geocoding.lat,
+          long: incident.geocoding.long,
         }));
-
-        return linkArray;
-      });
-
-      Incidents.addIncidents(incidentsMap)
-        .then(() => {
-          Incidents.addSources(linksMap.flat()).then(() => {
-            res
-              .status(201)
-              .json({ message: 'Incidents and sources inserted :D' });
-          });
-        })
-        .catch((error) => {
-          res
-            .status(500)
-            .json({ message: 'add incidents failed', error: error });
+  
+        const linksMap = incidentsArray.map((incident) => {
+          const linkArray = incident.links.map((link) => ({
+            incident_id: incident.id,
+            link: link,
+          }));
+  
+          return linkArray;
         });
-    })
-    .catch((error) => {
-      res.status(500).json({ message: error, error_found: true });
-    });
-});
-
-router.get('/incidents/:id', function (req, res) {
-  const { id } = req.params;
-
-  Incidents.findIncidentById(id)
-    .then((evt) => {
-      res.status(200).json(evt);
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: 'could not retrieve the requested incident',
-        error: error,
+  
+        Incidents.addIncidents(incidentsMap)
+          .then(() => {
+            Incidents.addSources(linksMap.flat()).then(() => {
+              res
+                .status(201)
+                .json({ message: 'Incidents and sources inserted :D' });
+            });
+          })
+          .catch((error) => {
+            res
+              .status(500)
+              .json({ message: 'add incidents failed', error: error });
+          });
+      })
+      .catch((error) => {
+        res.status(500).json({ message: error, error_found: true });
       });
-    });
 });
 
 router.get('/proxy', function (req, res) {
