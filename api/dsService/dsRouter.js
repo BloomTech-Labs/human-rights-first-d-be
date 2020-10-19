@@ -20,7 +20,6 @@ router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
     });
 });
 
-
 router.get('/populate', function (req, res) {
   dsModel
     .getData()
@@ -40,26 +39,26 @@ router.get('/populate', function (req, res) {
           incident_id: incident.id,
           link: link,
         }));
-          return linkArray;
-        });
-  
-        Incidents.addIncidents(incidentsMap)
-          .then(() => {
-            Incidents.addSources(linksMap.flat()).then(() => {
-              res
-                .status(201)
-                .json({ message: 'Incidents and sources inserted :D' });
-            });
-          })
-          .catch((error) => {
-            res
-              .status(500)
-              .json({ message: 'add incidents failed', error: error });
-          });
-      })
-      .catch((error) => {
-        res.status(500).json({ message: error, error_found: true });
+        return linkArray;
       });
+
+      Incidents.addIncidents(incidentsMap)
+        .then(() => {
+          Incidents.addSources(linksMap.flat()).then(() => {
+            res
+              .status(201)
+              .json({ message: 'Incidents and sources inserted :D' });
+          });
+        })
+        .catch((error) => {
+          res
+            .status(500)
+            .json({ message: 'add incidents failed', error: error });
+        });
+    })
+    .catch((error) => {
+      res.status(500).json({ message: error, error_found: true });
+    });
 });
 
 router.get('/proxy', function (req, res) {
