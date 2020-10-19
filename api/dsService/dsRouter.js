@@ -20,26 +20,26 @@ router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
     });
 });
 
-router.get('/incidents', function (req, res) {
-    dsModel
-      .getData()
-      .then((response) => {
-        const incidentsArray = JSON.parse(response.data);
-  
-        const incidentsMap = incidentsArray.map((incident) => ({
-          id: incident.id,
-          state: incident.state,
-          city: incident.city,
-          lat: incident.geocoding.lat,
-          long: incident.geocoding.long,
+
+router.get('/populate', function (req, res) {
+  dsModel
+    .getData()
+    .then((response) => {
+      const incidentsArray = JSON.parse(response.data);
+
+      const incidentsMap = incidentsArray.map((incident) => ({
+        id: incident.id,
+        state: incident.state,
+        city: incident.city,
+        lat: incident.geocoding.lat,
+        long: incident.geocoding.long,
+      }));
+
+      const linksMap = incidentsArray.map((incident) => {
+        const linkArray = incident.links.map((link) => ({
+          incident_id: incident.id,
+          link: link,
         }));
-  
-        const linksMap = incidentsArray.map((incident) => {
-          const linkArray = incident.links.map((link) => ({
-            incident_id: incident.id,
-            link: link,
-          }));
-  
           return linkArray;
         });
   
