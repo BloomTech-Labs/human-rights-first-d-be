@@ -20,6 +20,7 @@ router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
     });
 });
 
+
 router.get('/populate', function (req, res) {
   dsModel
     .getData()
@@ -39,42 +40,26 @@ router.get('/populate', function (req, res) {
           incident_id: incident.id,
           link: link,
         }));
-
-        return linkArray;
-      });
-
-      Incidents.addIncidents(incidentsMap)
-        .then(() => {
-          Incidents.addSources(linksMap.flat()).then(() => {
-            res
-              .status(201)
-              .json({ message: 'Incidents and sources inserted :D' });
-          });
-        })
-        .catch((error) => {
-          res
-            .status(500)
-            .json({ message: 'add incidents failed', error: error });
+          return linkArray;
         });
-    })
-    .catch((error) => {
-      res.status(500).json({ message: error, error_found: true });
-    });
-});
-
-router.get('/incidents/:id', function (req, res) {
-  const { id } = req.params;
-
-  Incidents.findIncidentById(id)
-    .then((evt) => {
-      res.status(200).json(evt);
-    })
-    .catch((error) => {
-      res.status(500).json({
-        message: 'could not retrieve the requested incident',
-        error: error,
+  
+        Incidents.addIncidents(incidentsMap)
+          .then(() => {
+            Incidents.addSources(linksMap.flat()).then(() => {
+              res
+                .status(201)
+                .json({ message: 'Incidents and sources inserted :D' });
+            });
+          })
+          .catch((error) => {
+            res
+              .status(500)
+              .json({ message: 'add incidents failed', error: error });
+          });
+      })
+      .catch((error) => {
+        res.status(500).json({ message: error, error_found: true });
       });
-    });
 });
 
 router.get('/proxy', function (req, res) {

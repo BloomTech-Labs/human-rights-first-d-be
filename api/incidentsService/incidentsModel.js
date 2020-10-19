@@ -4,6 +4,7 @@ module.exports = {
   addIncidents,
   addSources,
   findIncidentById,
+  getIncidents,
 };
 
 function addIncidents(arr) {
@@ -21,4 +22,13 @@ async function findIncidentById(id) {
 
   const result = { ...incident, sources };
   return result;
+}
+
+async function getIncidents() {
+    const incidents = await db('incidents')
+    .innerJoin('sources', 'incidents.id', 'sources.incident_id')
+    .select(['incidents.*', db.raw('json_agg(sources.*) as sources')])
+    .groupBy('incidents.id')
+
+    return incidents
 }
