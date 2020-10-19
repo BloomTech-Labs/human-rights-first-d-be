@@ -30,4 +30,19 @@ router.get('/incidents/:id', function (req, res) {
       });
     });
 });
+
+router.get('/dummy', function (req, res) {
+  
+  Incidents.getDummy()
+    .then((arr) => {
+      res.status(200).json(arr);
+    })
+    .catch((error) => {
+      res.status(500).json({
+        message: 'could not retrieve incidents',
+        error: error,
+      });
+    });
+});
+
 module.exports = router;

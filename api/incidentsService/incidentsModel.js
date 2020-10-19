@@ -5,6 +5,7 @@ module.exports = {
   addSources,
   findIncidentById,
   getIncidents,
+  getDummy,
 };
 
 function addIncidents(arr) {
@@ -31,4 +32,8 @@ async function getIncidents() {
     .groupBy('incidents.id')
 
     return incidents
+}
+
+function getDummy() {
+    return db('dummy_data');
 }
