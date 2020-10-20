@@ -2,7 +2,11 @@ const express = require('express');
 const router = express.Router();
 const Incidents = require('./incidentsModel');
 
-router.get('/incidents', function (req, res) {
+/* 
+This route is used by frontend to retrieve all incidents (with sources) 
+that are currently in the table
+*/
+router.get('/', function (req, res) {
   Incidents.getIncidents()
     .then((arr) => {
       res.status(200).json(arr);
@@ -15,7 +19,10 @@ router.get('/incidents', function (req, res) {
     });
 });
 
-router.get('/incidents/:id', function (req, res) {
+/*
+This route allows frontend to retrieve a specific incident (with sources) in the table. 
+*/
+router.get('/:id', function (req, res) {
   const { id } = req.params;
 
   Incidents.findIncidentById(id)
@@ -29,6 +36,11 @@ router.get('/incidents/:id', function (req, res) {
       });
     });
 });
+
+/* 
+This route allows frontend to test data if data science api is down, 
+might need to re-seed data on Heroku from time to time when needed.
+*/
 
 router.get('/dummy', function (req, res) {
   Incidents.getDummy()

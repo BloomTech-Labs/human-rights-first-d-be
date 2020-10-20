@@ -13,6 +13,7 @@ if (process.env.NODE_ENV != 'production' && config_result.error) {
   throw config_result.error;
 }
 
+// swagger stuff from starter code, you can keep it if you'd like. We didn't really use it, though.
 const swaggerSpec = swaggerJSDoc(jsdocConfig);
 const swaggerUIOptions = {
   explorer: true,
@@ -30,6 +31,7 @@ process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at: Promise', p, 'reason:', reason);
   // application specific logging, throwing an error, or other logic here
 });
+
 // docs would need to be built and committed
 app.use(
   '/api-docs',
