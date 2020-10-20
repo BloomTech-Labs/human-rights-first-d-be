@@ -40,7 +40,8 @@ router.get('/:id', function (req, res) {
 /* 
 This route allows frontend to test data if data science api is down, 
 might need to re-seed data on Heroku from time to time when needed.
-*/ 
+*/
+
 router.get('/dummy', function (req, res) {
   Incidents.getDummy()
     .then((arr) => {

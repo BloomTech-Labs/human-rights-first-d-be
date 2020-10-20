@@ -21,7 +21,6 @@ router.get('/predict/:x1/:x2/:3', authRequired, function (req, res) {
     });
 });
 
-
 // This function gets data from DS and populates tables with their data
 router.get('/populate', function (req, res) {
   dsModel
