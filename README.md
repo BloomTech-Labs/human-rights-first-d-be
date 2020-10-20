@@ -14,6 +14,16 @@ Our team is developing an interactive map that identifies potential instances of
 
 ## Contributing
 
+## Base URL for deployed site
+- https://labs27-d-hrf-api.herokuapp.com
+
 ## Endpoints
+| Request | URL | Description |
+| ------- | --- | ----------- |
+| GET | /data/proxy | connects directly to DS API if problems arise populating tables |
+| GET | /data/populate | adds data from the DS API to backend tables |
+|GET|/incidents| returns all incidents in the database|
+|GET|/incidents/:id|returns incident with given id|
+|GET|/incidents/dummy|returns seeded dummy data from previous team(currently connected to front end) **NOTE: different data schema than other endpoints|
 
 ## Table Schema
