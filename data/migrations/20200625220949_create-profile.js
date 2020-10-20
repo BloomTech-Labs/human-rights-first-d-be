@@ -14,9 +14,9 @@ exports.up = (knex) => {
         table.string('id').notNullable().unique().primary();
         table.string('state');
         table.string('city');
-        // table.string('date').notNullable();
-        // table.string('title', 1000).notNullable();
-        // table.string('description');
+        table.string('date').notNullable();
+        table.string('title', 1000).notNullable();
+        table.string('description', 10000);
         table.float('lat').notNullable();
         table.float('long').notNullable();
         // table.boolean('lethal', 255);

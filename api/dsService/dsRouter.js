@@ -34,6 +34,9 @@ router.get('/populate', function (req, res) {
         id: incident.id,
         state: incident.state,
         city: incident.city,
+        date: incident.date,
+        title: incident.title,
+        description: incident.description,
         lat: incident.geocoding.lat,
         long: incident.geocoding.long,
       }));
