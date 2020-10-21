@@ -1,3 +1,5 @@
+// seeding for dummy data... yeah it's longggg. Make sure to seed this on heroku from time to time.
+
 exports.seed = function (knex) {
   // Deletes ALL existing entries
   return knex('dummy_data')
