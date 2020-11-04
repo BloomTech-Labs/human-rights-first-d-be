@@ -2,10 +2,12 @@
 const axios = require('axios');
 const router = require('express').Router();
 
-router.get('/astate', async (req, res, next) => {
+router.get('/unemploymentrate/:state', async (req, res, next) => {
   try {
+    //length must be 2 letter abbreviation
+
     const a_state_unemployment_rate = await axios.get(
-      `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/viz/${req.body.state}`
+      `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/viz/${req.params.state}`
     );
 
     //case: state is not found

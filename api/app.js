@@ -27,7 +27,7 @@ const profileRouter = require('./profile/profileRouter');
 const dsRouter = require('./dsService/dsRouter');
 const incidentsRouter = require('./incidents/incidentsRouter');
 const incidentsModel = require('./incidents/incidentsModel');
-
+const ds_server = require('./ds_server/ds_server_router');
 //###[ Models ]###
 const incidentModel = require('./incidents/incidentsModel');
 const { dsFetch } = require('./dsService/dsUtil');
@@ -61,6 +61,7 @@ app.use('/', indexRouter);
 app.use(['/profile', '/profiles'], profileRouter);
 app.use('/data', dsRouter);
 app.use('/incidents', incidentsRouter);
+app.use('/ds_server', ds_server);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
