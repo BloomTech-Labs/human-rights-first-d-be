@@ -3,21 +3,29 @@ dotenv.config({ path: '../.env' });
 
 module.exports = {
   development: {
-    client: 'pg',
-    connection: process.env.DATABASE_URL,
+    client: 'sqlite3',
+    connection: { filename: '../data/ddb' },
     migrations: { directory: '../data/migrations' },
     seeds: { directory: '../data/seeds' },
     pool: {
-      min: 2,
-      max: 10,
+      afterCreate: (conn, done) => {
+        conn.run(`PRAGMA foreign_keys = ON`, done);
+      },
     },
   },
 
   test: {
-    client: 'pg',
-    connection: process.env.DATABASE_URL,
+    client: 'sqlite3',
+    connection: {
+      filename: ':memory:',
+    },
     migrations: { directory: '../data/migrations' },
     seeds: { directory: '../data/seeds' },
+    pool: {
+      afterCreate: (conn, done) => {
+        conn.run('PRAGMA foreign_keys = ON', done);
+      },
+    },
   },
 
   production: {
