@@ -12,8 +12,16 @@ describe('/ds_server/', function () {
 
     expect(res.status).toBe(200);
   });
-  it('us_map 404 missing post body', async function () {
+  it('us_map 404 missing all of post input', async function () {
     const res = await request(server).post('/ds_server/us_map').send();
+
+    expect(res.status).toBe(404);
+  });
+  it('us_map 404 missing part of post input', async function () {
+    const res = await request(server).post('/ds_server/us_map').send({
+      start_date: '2013-01-01',
+      end_date: '2019-01-01',
+    });
 
     expect(res.status).toBe(404);
   });
