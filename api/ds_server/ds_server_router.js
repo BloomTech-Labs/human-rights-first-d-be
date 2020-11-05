@@ -2,6 +2,17 @@
 const axios = require('axios');
 const router = require('express').Router();
 
+router.post('us_demo_pie', async () => {
+  try {
+    //validate inputs
+    //set default values
+    
+    //
+  } catch (error) {
+    next(error)
+  }
+})
+
 router.post('/us_map', async (req, res, next) => {
   try {
     // set default values to the post input if none are provided
@@ -39,6 +50,35 @@ router.post('/us_bar', async (req, res, next) => {
     cities => no spaces like Atlanta,GA
     //when you see first letter capitalize on DS doc that means that is how they want it
     */
+    //validate incoming inputs
+    //states inputs
+    // Todo: check that states var changes req...states
+    // const states = req.body.group_by.States
+    // const is_group_by_states = states 
+    // if(is_group_by_states){
+    //   states.forEach(state => {
+        
+    //     if (state.length === 2 ) {
+          
+    //       //change all given states abbreviation to uppercase
+    //       state.toUpperCase()
+    //     }
+    //     else{
+    //       //if the state input is not 2 characters ask user to change it to 2
+    //       res.status(404).json({error: "state abbreviation must be 2 letters"})
+    //     }
+        
+    //   })
+    // }
+
+    
+    //zipcodes
+    //no need, it will just not return data if put incorrect zipcode
+
+    //city no spaces like Atlanta,GA
+    // no spaces anywhere
+    // first letter capitalize
+    // state must be in upper case, and 2 chars
 
     //set defaul values
     const is_no_start_date = !req.body.start_date
