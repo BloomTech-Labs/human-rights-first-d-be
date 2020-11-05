@@ -2,12 +2,18 @@
 const axios = require('axios');
 const router = require('express').Router();
 
-router.post('us_demo_pie', async () => {
+router.post('/us_demo_pie', async (req, res, next) => {
   try {
     //validate inputs
-    //set default values
+    const is_missing_user_input = !req.body.user_input 
+    if(is_missing_user_input) res.status(404).json({error: "Missing a state"})
     
-    //
+    // get data from ds server
+    const state_demographics = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_demo_pie`, {
+      user_input: req.body.user_input
+    })
+
+    res.status(200).json({state_demographics: state_demographics.data})
   } catch (error) {
     next(error)
   }
