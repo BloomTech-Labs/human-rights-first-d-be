@@ -2,8 +2,8 @@
 const server = require('../app');
 const request = require('supertest');
 
-describe('/ds_server/', function () {
-  it('us_map 200', async () => {
+describe('/us_map/', function () {
+  it('200 passing data to client', async () => {
     const res = await request(server).post('/ds_server/us_map').send({
       start_date: '2013-01-01',
       end_date: '2019-01-01',
@@ -12,12 +12,12 @@ describe('/ds_server/', function () {
 
     expect(res.status).toBe(200);
   });
-  it('us_map 200 missing all of post input', async function () {
+  it('200 missing all of post input', async function () {
     const res = await request(server).post('/ds_server/us_map').send();
 
     expect(res.status).toBe(200);
   });
-  it('us_map 200 missing part of post input', async function () {
+  it('200 missing part of post input', async function () {
     const res = await request(server).post('/ds_server/us_map').send({
       start_date: '2013-01-01',
       end_date: '2019-01-01',
@@ -26,3 +26,12 @@ describe('/ds_server/', function () {
     expect(res.status).toBe(200);
   });
 });
+describe('/us_bar', () => {
+  it('200 passing data to client', async () => {
+    const res = await request(server).post(`/ds_server/us_bar`).send({
+
+    })
+
+    expect(res.status).toBe(200);
+  })
+})
