@@ -1,8 +1,4 @@
 //imports
-/* 
-server
-supertest 
-*/
 const server = require('../app');
 const request = require('supertest');
 
