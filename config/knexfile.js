@@ -4,6 +4,7 @@ dotenv.config({ path: '../.env' });
 module.exports = {
   development: {
     client: 'sqlite3',
+    useNullAsDefault: true,
     connection: { filename: '../data/ddb' },
     migrations: { directory: '../data/migrations' },
     seeds: { directory: '../data/seeds' },
@@ -14,8 +15,9 @@ module.exports = {
     },
   },
 
-  test: {
+  testing: {
     client: 'sqlite3',
+    useNullAsDefault: true,
     connection: {
       filename: ':memory:',
     },
