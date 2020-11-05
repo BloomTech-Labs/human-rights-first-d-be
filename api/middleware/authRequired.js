@@ -1,8 +1,8 @@
 const createError = require('http-errors');
 const OktaJwtVerifier = require('@okta/jwt-verifier');
-const oktaVerifierConfig = require('../../config/okta');
-const Profiles = require('../profile/profileModel');
-const oktaJwtVerifier = new OktaJwtVerifier(oktaVerifierConfig.config);
+// const oktaVerifierConfig = require('../../config/okta');
+// const Profiles = require('../profile/profileModel');
+// const oktaJwtVerifier = new OktaJwtVerifier(oktaVerifierConfig.config);
 
 const lookupProfile = async (id) => {
   return await Profiles.findById(id).then((profile) => {
