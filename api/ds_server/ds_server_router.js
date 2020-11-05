@@ -10,8 +10,7 @@ router.post('/us_map', async (req, res, next) => {
     //
     // check that the body has the require inputs
     const isMissingInputs =
-      !req.body.start_date && !req.body.end_date && !req.body.sort_by;
-
+      !req.body.start_date || !req.body.end_date || !req.body.sort_by;
     if (isMissingInputs) {
       res
         .status(404)
