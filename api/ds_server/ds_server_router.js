@@ -2,21 +2,30 @@
 const axios = require('axios');
 const router = require('express').Router();
 
-router.get('/unemploymentrate/:state', async (req, res, next) => {
+router.post('/us_map', async (req, res, next) => {
   try {
-    //length must be 2 letter abbreviation
+    // req.body.start_date
+    // req.body.end_date
+    // req.body.sort_by
+    //
+    console.log(`before axios `);
 
-    const a_state_unemployment_rate = await axios.get(
-      `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/viz/${req.params.state}`
+    let a_state_unemployment_rate = await axios.post(
+      `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_map`,
+      {
+        start_date: req.body.start_date,
+        end_date: req.body.end_date,
+        sort_by: req.body.sort_by,
+      }
     );
 
-    //case: state is not found
-    if (a_state_unemployment_rate.detail) {
-      res.status(404).json({ message: 'State not found' });
-    }
-
-    res.status(200).json(a_state_unemployment_rate);
+    console.log(`axios call => ${a_state_unemployment_rate}`);
+    res.status(200).json({
+      unemployment_rate: a_state_unemployment_rate.data,
+    });
   } catch (error) {
     next(error);
   }
 });
+
+module.exports = router;
