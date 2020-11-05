@@ -8,7 +8,15 @@ router.post('/us_map', async (req, res, next) => {
     // req.body.end_date
     // req.body.sort_by
     //
-    console.log(`before axios `);
+    // check that the body has the require inputs
+    const isMissingInputs =
+      !req.body.start_date && !req.body.end_date && !req.body.sort_by;
+
+    if (isMissingInputs) {
+      res
+        .status(404)
+        .json({ error: 'Incorrect start date, end date or sort by' });
+    }
 
     let a_state_unemployment_rate = await axios.post(
       `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_map`,
@@ -19,7 +27,6 @@ router.post('/us_map', async (req, res, next) => {
       }
     );
 
-    console.log(`axios call => ${a_state_unemployment_rate}`);
     res.status(200).json({
       unemployment_rate: a_state_unemployment_rate.data,
     });
