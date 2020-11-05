@@ -4,10 +4,6 @@ const router = require('express').Router();
 
 router.post('/us_map', async (req, res, next) => {
   try {
-    // req.body.start_date
-    // req.body.end_date
-    // req.body.sort_by
-    //
     // check that the body has the require inputs
     const isMissingInputs =
       !req.body.start_date || !req.body.end_date || !req.body.sort_by;
@@ -17,6 +13,7 @@ router.post('/us_map', async (req, res, next) => {
         .json({ error: 'Incorrect start date, end date or sort by' });
     }
 
+    //get data from ds_server
     let a_state_unemployment_rate = await axios.post(
       `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_map`,
       {
@@ -26,6 +23,7 @@ router.post('/us_map', async (req, res, next) => {
       }
     );
 
+    //return send ds_server data
     res.status(200).json({
       unemployment_rate: a_state_unemployment_rate.data,
     });
