@@ -10,7 +10,7 @@ const jsdocConfig = require('../config/jsdoc');
 const dotenv = require('dotenv');
 const config_result = dotenv.config();
 const cron = require('node-cron');
-const axios = require('axios');
+// const axios = require('axios');
 
 if (process.env.NODE_ENV != 'production' && config_result.error) {
   throw config_result.error;
@@ -22,14 +22,14 @@ const swaggerUIOptions = {
 };
 
 //###[  Routers ]###
-const indexRouter = require('./index/indexRouter');
-const profileRouter = require('./profile/profileRouter');
-const dsRouter = require('./dsService/dsRouter');
-const incidentsRouter = require('./incidents/incidentsRouter');
-const incidentsModel = require('./incidents/incidentsModel');
+// const indexRouter = require('./index/indexRouter');
+// const profileRouter = require('./profile/profileRouter');
+// const dsRouter = require('./dsService/dsRouter');
+// const incidentsRouter = require('./incidents/incidentsRouter');
+// const incidentsModel = require('./incidents/incidentsModel');
 const ds_server = require('./ds_server/ds_server_router');
 //###[ Models ]###
-const incidentModel = require('./incidents/incidentsModel');
+// const incidentModel = require('./incidents/incidentsModel');
 const { dsFetch } = require('./dsService/dsUtil');
 
 const app = express();
@@ -57,10 +57,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // application routes
-app.use('/', indexRouter);
-app.use(['/profile', '/profiles'], profileRouter);
-app.use('/data', dsRouter);
-app.use('/incidents', incidentsRouter);
+// app.use('/', indexRouter);
+// app.use(['/profile', '/profiles'], profileRouter);
+// app.use('/data', dsRouter);
+// app.use('/incidents', incidentsRouter);
 app.use('/ds_server', ds_server);
 
 // catch 404 and forward to error handler
