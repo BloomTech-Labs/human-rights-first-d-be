@@ -63,36 +63,41 @@ app.use(cookieParser());
 // app.use('/incidents', incidentsRouter);
 app.use('/ds_server', ds_server);
 
-// catch 404 and forward to error handler
-app.use(function (req, res, next) {
-  next(createError(404));
+// Global 500 error catcher
+app.use((err, req, res, next) => {
+  res.status(500).json({ err });
 });
+
+// // catch 404 and forward to error handler
+// app.use(function (req, res, next) {
+//   next(createError(404));
+// });
 
 // error handler
-app.use(function (err, req, res, next) {
-  if (err instanceof createError.HttpError) {
-    res.locals.message = err.message;
-    res.locals.status = err.statusCode;
-    if (process.env.NODE_ENV === 'development') {
-      res.locals.error = err;
-    }
-  }
-  console.error(err);
-  if (process.env.NODE_ENV === 'production' && !res.locals.message) {
-    res.locals.message = 'ApplicationError';
-    res.locals.status = 500;
-  }
-  if (res.locals.status) {
-    res.status(res.locals.status || 500);
-    const errObject = { error: res.locals.error, message: res.locals.message };
-    return res.json(errObject);
-  }
-  next(err);
-});
+// app.use(function (err, req, res, next) {
+//   if (err instanceof createError.HttpError) {
+//     res.locals.message = err.message;
+//     res.locals.status = err.statusCode;
+//     if (process.env.NODE_ENV === 'development') {
+//       res.locals.error = err;
+//     }
+//   }
+//   console.error(err);
+//   if (process.env.NODE_ENV === 'production' && !res.locals.message) {
+//     res.locals.message = 'ApplicationError';
+//     res.locals.status = 500;
+//   }
+//   if (res.locals.status) {
+//     res.status(res.locals.status || 500);
+//     const errObject = { error: res.locals.error, message: res.locals.message };
+//     return res.json(errObject);
+//   }
+//   next(err);
+// });
 
-// cron job to retrieve data from DS API
-cron.schedule('* * 12 * *', () => {
-  dsFetch();
-});
+// // cron job to retrieve data from DS API
+// cron.schedule('* * 12 * *', () => {
+//   dsFetch();
+// });
 
 module.exports = app;
