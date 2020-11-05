@@ -4,14 +4,13 @@ const router = require('express').Router();
 
 router.post('/us_map', async (req, res, next) => {
   try {
-    // check that the body has the require inputs
-    const isMissingInputs =
-      !req.body.start_date || !req.body.end_date || !req.body.sort_by;
-    if (isMissingInputs) {
-      res
-        .status(404)
-        .json({ error: 'Incorrect start date, end date or sort by' });
-    }
+    // set default values to the post input if none are provided
+    const is_no_start_date = !req.body.start_date
+    const is_no_end_date = !req.body.end_date
+    const is_no_sort_by = !req.body.sort_by
+    if(is_no_start_date) req.body.start_date = "2013-01-01";
+    if(is_no_end_date) req.body.end_date = "2019-01-01";
+    if(is_no_sort_by) req.body.sort_by = "Demographic";
 
     //get data from ds_server
     let a_state_unemployment_rate = await axios.post(
