@@ -46,3 +46,16 @@ describe('/us_demo_pie', () => {
     expect(res.status).toBe(200)
   })
 })
+
+describe('/us_pie_vic', () => {
+  it('200 valid inputs are given', async () => {
+    const res = await request(server).post('/ds_server/us_pie_vic').send({
+      start_date: "string",
+      end_date: "string",
+      group_by: {},
+      sort_by: "string"
+    })
+
+    expect(res.status).toBe(200)
+  })
+})
