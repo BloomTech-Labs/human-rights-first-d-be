@@ -78,4 +78,19 @@ router.post('/us_bar', async (req, res, next) => {
     next(error)
   }
 })
+
+router.post('/us_pie_vic', async (req, res, next) => {
+  try {
+    //set defaul values
+
+    //get DS server data
+
+    // respond to client with the DS data
+
+
+  } catch (error) {
+    next(error)
+  }
+})
+
 module.exports = router;
