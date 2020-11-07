@@ -55,7 +55,7 @@ describe('/us_pie_vic', () => {
       group_by: {},
       sort_by: "string"
     })
-
+    expect(res.body.pie).toEqual(expect.any(String))
     expect(res.status).toBe(200)
   })
 })
