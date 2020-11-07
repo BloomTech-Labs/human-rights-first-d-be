@@ -82,17 +82,20 @@ router.post('/us_bar', async (req, res, next) => {
 router.post('/us_pie_vic', async (req, res, next) => {
   try {
     //set defaul values
-
+    if(!req.body.start_date) req.body.start_date = "2013-01-01"
+    if(!req.body.end_date) req.body.end_date = "2020-01-01"
+    if(!req.body.group_by) req.body.group_by = {"National":true}
+    if(!req.body.sort_by) req.body.end_date = "Victim's race"
     //get DS server data
-    axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
-      start_date: "string",
-      end_date: "string",
-      group_by: {},
-      sort_by: "string"
+    const pie = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
+      start_date: "2013-01-01",
+      end_date: "2020-01-01",
+      group_by: {"National":true},
+      sort_by: "Victim's race"
     })
+
     // respond to client with the DS data
-
-
+    res.status(200).json({pie: pie.data})
   } catch (error) {
     next(error)
   }
