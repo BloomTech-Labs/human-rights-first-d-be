@@ -84,7 +84,12 @@ router.post('/us_pie_vic', async (req, res, next) => {
     //set defaul values
 
     //get DS server data
-
+    axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
+      start_date: "string",
+      end_date: "string",
+      group_by: {},
+      sort_by: "string"
+    })
     // respond to client with the DS data
 
 
