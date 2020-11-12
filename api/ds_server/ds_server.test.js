@@ -33,6 +33,7 @@ describe('/us_bar', () => {
     })
 
     expect(res.status).toBe(200);
+    expect(res.body).toMatch(expect.any(String));
   })
 })
 
