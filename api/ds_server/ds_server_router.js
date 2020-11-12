@@ -95,7 +95,7 @@ router.post('/us_pie_vic', async (req, res, next) => {
     })
 
     // respond to client with the DS data
-    res.status(200).json({pie: pie.data})
+    res.status(200).json(pie.data)
   } catch (error) {
     next(error)
   }
