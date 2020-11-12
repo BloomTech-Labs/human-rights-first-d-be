@@ -62,7 +62,6 @@ describe('/us_pie_vic', () => {
 
 describe('/us_non_lethal', () => {
   it('200 receive data, and return it', async () => {
-    jest.setTimeout(30000);
     const res = await request(server).post('/ds_server/us_non_lethal').send({
       user_input: 5 
     })
