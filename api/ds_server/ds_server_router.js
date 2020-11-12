@@ -14,7 +14,7 @@ router.post('/us_demo_pie', async (req, res, next) => {
     })
 
     //return DS server data to the client
-    res.status(200).json({state_demographics: state_demographics.data})
+    res.status(200).json(state_demographics.data)
   } catch (error) {
     next(error)
   }
