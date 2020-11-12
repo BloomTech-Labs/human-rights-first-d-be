@@ -24,6 +24,7 @@ describe('/us_map/', function () {
     });
 
     expect(res.status).toBe(200);
+    expect(res.body).toEqual(expect.any(String));
   });
 });
 describe('/us_bar', () => {
@@ -33,6 +34,7 @@ describe('/us_bar', () => {
     })
 
     expect(res.status).toBe(200);
+    expect(res.body).toEqual(expect.any(String));
   })
 })
 
@@ -40,9 +42,33 @@ describe('/us_demo_pie', () => {
   it('200 passing date to client',  async () => {
     const res = await request(server).post(`/ds_server/us_demo_pie`).send({
       user_input: "FL"
+    }) 
+
+    expect(res.body).toEqual(expect.any(String))
+    expect(res.status).toBe(200)
+  })
+})
+
+describe('/us_pie_vic', () => {
+  it('200 valid inputs are given', async () => {
+    const res = await request(server).post('/ds_server/us_pie_vic').send({
+      start_date: "string",
+      end_date: "string",
+      group_by: {},
+      sort_by: "string"
+    })
+    expect(res.body).toEqual(expect.any(String))
+    expect(res.status).toBe(200)
+  })
+})
+
+describe('/us_non_lethal', () => {
+  it('200 receive data, and return it', async () => {
+    const res = await request(server).post('/ds_server/us_non_lethal').send({
+      user_input: 5 
     })
 
-    expect(res.body.state_demographics).toEqual(expect.any(String))
+    expect(res.body).toEqual(expect.any(String))
     expect(res.status).toBe(200)
   })
 })

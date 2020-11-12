@@ -13,7 +13,8 @@ router.post('/us_demo_pie', async (req, res, next) => {
       user_input: req.body.user_input
     })
 
-    res.status(200).json({state_demographics: state_demographics.data})
+    //return DS server data to the client
+    res.status(200).json(state_demographics.data)
   } catch (error) {
     next(error)
   }
@@ -30,7 +31,7 @@ router.post('/us_map', async (req, res, next) => {
     if(is_no_sort_by) req.body.sort_by = "Demographic";
 
     //get data from ds_server
-    let a_state_unemployment_rate = await axios.post(
+    let incidents_rate = await axios.post(
       `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_map`,
       {
         start_date: req.body.start_date,
@@ -40,9 +41,7 @@ router.post('/us_map', async (req, res, next) => {
     );
 
     //return send ds_server data
-    res.status(200).json({
-      unemployment_rate: a_state_unemployment_rate.data,
-    });
+    res.status(200).json(incidents_rate.data);
   } catch (error) {
     next(error);
   }
@@ -50,41 +49,6 @@ router.post('/us_map', async (req, res, next) => {
 
 router.post('/us_bar', async (req, res, next) => {
   try {
-    /* 
-    Backend will handle the input validation
-    state have to be 2 letter and capitalize = GA FL CA
-    cities => no spaces like Atlanta,GA
-    //when you see first letter capitalize on DS doc that means that is how they want it
-    */
-    //validate incoming inputs
-    //states inputs
-    // Todo: check that states var changes req...states
-    // const states = req.body.group_by.States
-    // const is_group_by_states = states 
-    // if(is_group_by_states){
-    //   states.forEach(state => {
-        
-    //     if (state.length === 2 ) {
-          
-    //       //change all given states abbreviation to uppercase
-    //       state.toUpperCase()
-    //     }
-    //     else{
-    //       //if the state input is not 2 characters ask user to change it to 2
-    //       res.status(404).json({error: "state abbreviation must be 2 letters"})
-    //     }
-        
-    //   })
-    // }
-
-    
-    //zipcodes
-    //no need, it will just not return data if put incorrect zipcode
-
-    //city no spaces like Atlanta,GA
-    // no spaces anywhere
-    // first letter capitalize
-    // state must be in upper case, and 2 chars
 
     //set defaul values
     const is_no_start_date = !req.body.start_date
@@ -107,9 +71,49 @@ router.post('/us_bar', async (req, res, next) => {
       })
 
     // send DS data to cliet  
-    res.status(200).json({ us_bar: us_bar.data })
+    res.status(200).json(us_bar.data )
   } catch (error) {
     next(error)
   }
+})
+
+router.post('/us_pie_vic', async (req, res, next) => {
+  try {
+    //set defaul values
+    if(!req.body.start_date) req.body.start_date = "2013-01-01"
+    if(!req.body.end_date) req.body.end_date = "2020-01-01"
+    if(!req.body.group_by) req.body.group_by = {"National":true}
+    if(!req.body.sort_by) req.body.end_date = "Victim's race"
+    //get DS server data
+    const pie = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
+      start_date: "2013-01-01",
+      end_date: "2020-01-01",
+      group_by: {"National":true},
+      sort_by: "Victim's race"
+    })
+
+    // respond to client with the DS data
+    res.status(200).json(pie.data)
+  } catch (error) {
+    next(error)
+  }
+})
+
+router.post('/us_non_lethal', async (req, res, next) => {
+  try {
+    //defaul value
+    if (!req.body.user_input) req.body.user_input = 20
+
+    //collect data from the DS team server
+    const ds_res = await axios.post('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal', {
+      user_input: req.body.user_input
+    })
+
+    //return ds Plotly data to client 
+    res.status(200).json(ds_res.data)
+  } catch (error) {
+    next(error)
+  }
+  
 })
 module.exports = router;
