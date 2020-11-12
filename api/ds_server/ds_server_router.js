@@ -41,9 +41,7 @@ router.post('/us_map', async (req, res, next) => {
     );
 
     //return send ds_server data
-    res.status(200).json({
-      incidents_rate: incidents_rate.data,
-    });
+    res.status(200).json(incidents_rate.data);
   } catch (error) {
     next(error);
   }
