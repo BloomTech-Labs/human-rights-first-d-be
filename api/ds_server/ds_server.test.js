@@ -42,7 +42,7 @@ describe('/us_demo_pie', () => {
       user_input: "FL"
     }) 
 
-    expect(res.body.state_demographics).toEqual(expect.any(String))
+    expect(res.body).toEqual(expect.any(String))
     expect(res.status).toBe(200)
   })
 })
