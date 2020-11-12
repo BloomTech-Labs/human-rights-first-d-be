@@ -99,15 +99,10 @@ router.post('/us_pie_vic', async (req, res, next) => {
   }
 })
 
-router.post('/us_non_lethal', async (req, res, next) => {
+router.get('/us_non_lethal', async (req, res, next) => {
   try {
-    //defaul value
-    if (!req.body.user_input) req.body.user_input = 20
-
     //collect data from the DS team server
-    const ds_res = await axios.post('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal', {
-      user_input: req.body.user_input
-    })
+    const ds_res = await axios.get('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal')
 
     //return ds Plotly data to client 
     res.status(200).json(ds_res.data)
