@@ -111,4 +111,14 @@ router.get('/us_non_lethal', async (req, res, next) => {
   }
   
 })
+
+router.get('/us_non_lethal_line', async (req, res, next) => {
+  try {
+    const ds_res = (await axios.get('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal_line')).data
+
+    res.status(200).json(ds_res)
+  } catch (error) {
+    next(error)
+  }
+} )
 module.exports = router;
