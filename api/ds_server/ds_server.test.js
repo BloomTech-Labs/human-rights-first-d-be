@@ -24,6 +24,7 @@ describe('/us_map/', function () {
     });
 
     expect(res.status).toBe(200);
+    expect(res.body).toEqual(expect.any(String));w
   });
 });
 describe('/us_bar', () => {
