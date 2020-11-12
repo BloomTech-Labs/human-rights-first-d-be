@@ -59,3 +59,14 @@ describe('/us_pie_vic', () => {
     expect(res.status).toBe(200)
   })
 })
+
+describe('/us_non_lethal', () => {
+  it('200 receive data, and return it', async () => {
+    const res = await request(server).post('/ds_server/us_non_lethal').send({
+      user_input: 20 
+    })
+
+    expect(res.body).toMatch(expect.any(Object))
+    expect(res.status).toBe(200)
+  })
+})
