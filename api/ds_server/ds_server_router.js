@@ -73,7 +73,7 @@ router.post('/us_bar', async (req, res, next) => {
       })
 
     // send DS data to cliet  
-    res.status(200).json({ us_bar: us_bar.data })
+    res.status(200).json(us_bar.data )
   } catch (error) {
     next(error)
   }
