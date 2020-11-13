@@ -62,13 +62,17 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
 const validate_us_bar = [
   body('start_date').isDate(),
   body('end_date').isDate(),
-  body('group_by.National').isBoolean(),
+  body('group_by.National')
+    .isBoolean()
+    .optional(),
   body('group_by.States')
     .optional()  
     .isAlpha()
     .isLength({min:2, max:2})
     .isUppercase(),
-  body('group_by.Zipcode').optional().isPostalCode('US'),
+  body('group_by.Zipcode')
+    .optional()
+    .isPostalCode('US'),
   body('group_by.City')
     .optional()  
     .isAlpha()
@@ -82,10 +86,8 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
     const is_errors = !errors.isEmpty()
     if(is_errors){
       return res.status(404).json(errors)
-      // return res.status(404).json({invalid_input: "Invalid input"})
     }
 
-    
     // get data from DS server
     const us_bar = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_bar`, {
         start_date: req.body.start_date,
