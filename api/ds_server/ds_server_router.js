@@ -143,10 +143,10 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
 router.get('/us_non_lethal', async (req, res, next) => {
   try {
     //collect data from the DS team server
-    const ds_res = await axios.get('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal')
+    const ds_res = (await axios.get('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal')).data
 
     //return ds Plotly data to client 
-    res.status(200).json(ds_res.data)
+    res.status(200).json(ds_res)
   } catch (error) {
     next(error)
   }
