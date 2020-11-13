@@ -30,15 +30,19 @@ router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
   }
 })
 
-router.post('/us_map', async (req, res, next) => {
+const validate_us_map = [
+  body('start_date').isDate(),
+  body('end_date').isDate(),
+  body('sort_by').isIn(['Armed/Unarmed', 'Demographic', 'Victim\'s gender']),
+]
+router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, next) => {
   try {
-    // set default values to the post input if none are provided
-    const is_no_start_date = !req.body.start_date
-    const is_no_end_date = !req.body.end_date
-    const is_no_sort_by = !req.body.sort_by
-    if(is_no_start_date) req.body.start_date = "2013-01-01";
-    if(is_no_end_date) req.body.end_date = "2019-01-01";
-    if(is_no_sort_by) req.body.sort_by = "Demographic";
+    //validate
+    const errors = validationResult(req)
+    if(!errors.isEmpty()) {
+      console.log("inside errors")
+      return res.status(404).json({not_valid: 'Invalid input'})
+    }
 
     //get data from ds_server
     let incidents_rate = await axios.post(
@@ -133,6 +137,17 @@ router.get('/us_non_lethal_line', async (req, res, next) => {
 } )
 
 
-
+//local middleware
+function default_values_us_map(req,res,next){
+      
+      // set default values to the post input if none are provided
+      const is_no_start_date = !req.body.start_date
+      const is_no_end_date = !req.body.end_date
+      const is_no_sort_by = !req.body.sort_by
+      if(is_no_start_date) req.body.start_date = "2013-01-01";
+      if(is_no_end_date) req.body.end_date = "2019-01-01";
+      if(is_no_sort_by) req.body.sort_by = "Demographic";
+      next()
+    }
 
 module.exports = router;
