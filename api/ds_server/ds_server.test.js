@@ -2,6 +2,35 @@
 const server = require('../app');
 const request = require('supertest');
 
+
+describe('/us_demo_pie', () => {
+  it('200 passing date to client with valid input',  async () => {
+    const res = await request(server).post(`/ds_server/us_demo_pie`).send({
+      user_input: "FL"
+    }) 
+
+    expect(res.body).toEqual(expect.any(String))
+    expect(res.status).toBe(200)
+  })
+
+  it('404 input is NONE Alpha', async () => {
+    const res = await request(server).post('/ds_server/us_demo_pie').send({
+      user_input: "11"
+    })
+    
+    expect(res.status).toBe(404)
+    expect(res.body.invalid_input).toEqual(expect.any(String))
+  })
+  it('404 input is length is not 2', async () => {
+    const res = await request(server).post('/ds_server/us_demo_pie').send({
+      user_input: "FLO"
+    })
+    
+    expect(res.status).toBe(400)
+    expect(res.body.invalid_input).toEqual(expect.any(String))
+  })
+  // it('404 ')
+})
 describe('/us_map/', function () {
   it('200 passing data to client', async () => {
     const res = await request(server).post('/ds_server/us_map').send({
@@ -37,18 +66,6 @@ describe('/us_bar', () => {
     expect(res.body).toEqual(expect.any(String));
   })
 })
-
-describe('/us_demo_pie', () => {
-  it('200 passing date to client',  async () => {
-    const res = await request(server).post(`/ds_server/us_demo_pie`).send({
-      user_input: "FL"
-    }) 
-
-    expect(res.body).toEqual(expect.any(String))
-    expect(res.status).toBe(200)
-  })
-})
-
 describe('/us_pie_vic', () => {
   it('200 valid inputs are given', async () => {
     const res = await request(server).post('/ds_server/us_pie_vic').send({
@@ -61,7 +78,6 @@ describe('/us_pie_vic', () => {
     expect(res.status).toBe(200)
   })
 })
-
 describe('/us_non_lethal', () => {
   it('200 receive data, and return it', async () => {
     const res = await request(server).get('/ds_server/us_non_lethal')
@@ -70,7 +86,6 @@ describe('/us_non_lethal', () => {
     expect(res.status).toBe(200)
   })
 })
-
 describe('​/us_non_lethal_line', () => {
   it('200 data is pass down to client', async () => {
     const res = await request(server).get('/ds_server/us_non_lethal_line')
