@@ -99,17 +99,23 @@ describe('/us_bar', () => {
     */
     expect(res.status).toBe(200)
     expect(res.body).toEqual(expect.any(String))
+
   })
 })
-it('')
+it('200 Zipcode are accepted, asc false works', async () => {
+    const res = await request(server).post('/ds_server/us_bar').send({
+      group_by: {Zipcode: [18201]},
+      asc: false
+    })
+    expect(res.body).toEqual(expect.any(String))
+    expect(res.body).toMatch(/18201/i)
+    expect(res.status).toBe(200)
+  })
+
 describe('/us_pie_vic', () => {
   it('200 valid inputs are given', async () => {
-    const res = await request(server).post('/ds_server/us_pie_vic').send({
-      start_date: "string",
-      end_date: "string",
-      group_by: {},
-      sort_by: "string"
-    })
+    const res = await request(server).post('/ds_server/us_pie_vic')
+
     expect(res.body).toEqual(expect.any(String))
     expect(res.status).toBe(200)
   })
