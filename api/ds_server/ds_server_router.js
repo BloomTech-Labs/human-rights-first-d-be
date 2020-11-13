@@ -14,7 +14,7 @@ router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
     //validate inputs
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-      return res.status(404).json({ errors: 'Invalid state abbreviation. Must be 2 characters, and all capitalize.'})
+      return res.status(404).json({ invalid_input: 'Invalid state abbreviation. Must be 2 characters, and all capitalize.'})
     }
 
     // get data from ds server
