@@ -60,14 +60,31 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
   }
 });
 
-const validate_us_bar
-router.post('/us_bar', default_value_us_bar, async (req, res, next) => {
+const validate_us_bar = [
+  body('start_date').isDate(),
+  body('end_date').isDate(),
+  body('group_by.National').isBoolean(),
+  body('group_by.States')
+    .optional()  
+    .isAlpha()
+    .isLength({min:2, max:2})
+    .isUppercase(),
+  body('group_by.Zipcode').optional().isPostalCode('US'),
+  body('group_by.City')
+    .optional()  
+    .isAlpha()
+    .isLength({min:4, max: 30}), 
+  body('asc').isBoolean(),
+]
+router.post('/us_bar', default_value_us_bar, validate_us_bar, async (req, res, next) => {
   try {
-      // if (is_no_start_date) req.body.start_date = "2013-01-01"
-      // if (is_no_end_date) req.body.end_date = "2019-01-01"
-      // if (is_no_group_by) req.body.group_by = {National: true}
-      // if (is_no_asc) req.body.asc = true
-    
+    //if validation is not valid
+    const errors = validationResult(req)
+    const is_errors = !errors.isEmpty()
+    if(is_errors){
+      return res.status(404).json(errors)
+      // return res.status(404).json({invalid_input: "Invalid input"})
+    }
 
     
     // get data from DS server
