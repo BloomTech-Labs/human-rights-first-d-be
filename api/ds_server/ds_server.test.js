@@ -26,10 +26,10 @@ describe('/us_demo_pie', () => {
       user_input: "FLO"
     })
     
-    expect(res.status).toBe(400)
+    expect(res.status).toBe(404)
     expect(res.body.invalid_input).toEqual(expect.any(String))
   })
-  // it('404 ')
+  // it('404 input not')
 })
 describe('/us_map/', function () {
   it('200 passing data to client', async () => {
