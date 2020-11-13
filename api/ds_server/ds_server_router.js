@@ -1,20 +1,30 @@
-//import libraries
+// libraries
 const axios = require('axios');
 const router = require('express').Router();
+const {body, validationResult} = require('express-validator')
 
-router.post('/us_demo_pie', async (req, res, next) => {
+//validation
+const validate_us_demo_pie = [
+  body('user_input')
+  .isAlpha()
+  .isLength({min:2, max:2})
+  .isUppercase()
+]
+router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
   try {
     //validate inputs
-    const is_missing_user_input = !req.body.user_input 
-    if(is_missing_user_input) res.status(404).json({error: "Missing a state"})
-    
+    const errors = validationResult(req)
+    if(!errors.isEmpty()){
+      return res.status(404).json({ errors: 'Invalid state abbreviation. Must be 2 characters, and all capitalize.'})
+    }
+
     // get data from ds server
-    const state_demographics = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_demo_pie`, {
+    const state_demographics = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_demo_pie`, {
       user_input: req.body.user_input
-    })
+    })).data
 
     //return DS server data to the client
-    res.status(200).json(state_demographics.data)
+    res.status(200).json(state_demographics)
   } catch (error) {
     next(error)
   }
@@ -121,4 +131,8 @@ router.get('/us_non_lethal_line', async (req, res, next) => {
     next(error)
   }
 } )
+
+
+
+
 module.exports = router;
