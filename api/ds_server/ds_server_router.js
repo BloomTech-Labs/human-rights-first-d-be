@@ -76,7 +76,7 @@ const validate_us_bar = [
     .isLength({min:4, max: 30}), 
   body('asc').isBoolean(),
 ]
-router.post('/us_bar', default_value_us_bar, validate_us_bar, async (req, res, next) => {
+router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, next) => {
   try {
     //if validation is not valid
     const errors = validationResult(req)
@@ -102,13 +102,30 @@ router.post('/us_bar', default_value_us_bar, validate_us_bar, async (req, res, n
   }
 })
 
-router.post('/us_pie_vic', async (req, res, next) => {
+const validate_us_pie_vic = [
+  body('start_date').isDate(),
+  body('end_date').isDate(),
+  body('group_by.National').optional().isBoolean(),
+  body('group_by.States')
+    .optional()
+    .isAlpha()
+    .isLength({min:2, max:2})
+    .isUppercase(),
+  body('group_by.City')
+    .optional()
+    .isAlpha()
+    .isLength({min:4, max: 30}),
+  body('asc').isBoolean(),
+]
+router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async (req, res, next) => {
   try {
-    //set defaul values
-    if(!req.body.start_date) req.body.start_date = "2013-01-01"
-    if(!req.body.end_date) req.body.end_date = "2020-01-01"
-    if(!req.body.group_by) req.body.group_by = {"National":true}
-    if(!req.body.sort_by) req.body.end_date = "Victim's race"
+
+    // if(!req.body.start_date) req.body.start_date = "2013-01-01"
+    //   if(!req.body.end_date) req.body.end_date = "2020-01-01"
+    //   if(!req.body.group_by) req.body.group_by = {"National":true}
+    //   if(!req.body.sort_by) req.body.end_date = "Victim's race"
+    
+      
     //get DS server data
     const pie = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
       start_date: "2013-01-01",
@@ -149,7 +166,17 @@ router.get('/us_non_lethal_line', async (req, res, next) => {
 
 
 //local middleware
-function default_value_us_bar(req, res, next){
+function default_values_us_pie_vic(req, res, next){
+
+      //set defaul values
+      if(!req.body.start_date) req.body.start_date = "2013-01-01"
+      if(!req.body.end_date) req.body.end_date = "2020-01-01"
+      if(!req.body.group_by) req.body.group_by = {"National":true}
+      if(!req.body.sort_by) req.body.end_date = "Victim's race"
+
+      next()
+    }
+function default_values_us_bar(req, res, next){
       //set defaul values
       const is_no_start_date = !req.body.start_date
       const is_no_end_date = !req.body.end_date
