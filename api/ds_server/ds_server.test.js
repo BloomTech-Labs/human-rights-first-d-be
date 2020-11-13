@@ -87,15 +87,21 @@ describe('/us_map/', () => {
   })
 })
 describe('/us_bar', () => {
-  it('200 passing data to client', async () => {
-    const res = await request(server).post(`/ds_server/us_bar`).send({
+  it('200 default input pass data to client', async () => {
+    const res = await request(server).post(`/ds_server/us_bar`)
 
-    })
-
+    /*
+    defaul values automatically added
+      start_date = "2013-01-01"
+      end_date = "2019-01-01"
+      group_by = {National: true}
+      asc = true
+    */
     expect(res.status).toBe(200)
     expect(res.body).toEqual(expect.any(String))
   })
 })
+it('')
 describe('/us_pie_vic', () => {
   it('200 valid inputs are given', async () => {
     const res = await request(server).post('/ds_server/us_pie_vic').send({
