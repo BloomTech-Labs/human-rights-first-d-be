@@ -3,7 +3,6 @@ const axios = require('axios');
 const router = require('express').Router();
 const {body, validationResult} = require('express-validator')
 
-//validation
 const validate_us_demo_pie = [
   body('user_input')
   .isAlpha()
@@ -61,19 +60,14 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
   }
 });
 
-router.post('/us_bar', async (req, res, next) => {
+const validate_us_bar
+router.post('/us_bar', default_value_us_bar, async (req, res, next) => {
   try {
-
-    //set defaul values
-    const is_no_start_date = !req.body.start_date
-    const is_no_end_date = !req.body.end_date
-    const is_no_group_by = !req.body.group_by
-    const is_no_asc = !req.body.asc
-
-    if (is_no_start_date) req.body.start_date = "2013-01-01"
-    if (is_no_end_date) req.body.end_date = "2019-01-01"
-    if (is_no_group_by) req.body.group_by = {National: true}
-    if (is_no_asc) req.body.asc = true
+      // if (is_no_start_date) req.body.start_date = "2013-01-01"
+      // if (is_no_end_date) req.body.end_date = "2019-01-01"
+      // if (is_no_group_by) req.body.group_by = {National: true}
+      // if (is_no_asc) req.body.asc = true
+    
 
     
     // get data from DS server
@@ -138,6 +132,20 @@ router.get('/us_non_lethal_line', async (req, res, next) => {
 
 
 //local middleware
+function default_value_us_bar(req, res, next){
+      //set defaul values
+      const is_no_start_date = !req.body.start_date
+      const is_no_end_date = !req.body.end_date
+      const is_no_group_by = !req.body.group_by
+      const is_no_asc = !req.body.asc
+  
+      if (is_no_start_date) req.body.start_date = "2013-01-01"
+      if (is_no_end_date) req.body.end_date = "2019-01-01"
+      if (is_no_group_by) req.body.group_by = {National: true}
+      if (is_no_asc) req.body.asc = true
+
+      next()
+    }
 function default_values_us_map(req,res,next){
       
       // set default values to the post input if none are provided
