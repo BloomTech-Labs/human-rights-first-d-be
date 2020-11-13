@@ -115,6 +115,10 @@ const validate_us_pie_vic = [
     .optional()
     .isAlpha()
     .isLength({min:4, max: 30}),
+  body('sort_by.Victim\s race')
+  .optional()
+  .isAlpha()
+  .isLength({min: 5, max: 30}),
   body('asc').isBoolean(),
 ]
 router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async (req, res, next) => {
@@ -172,7 +176,7 @@ function default_values_us_pie_vic(req, res, next){
       if(!req.body.start_date) req.body.start_date = "2013-01-01"
       if(!req.body.end_date) req.body.end_date = "2020-01-01"
       if(!req.body.group_by) req.body.group_by = {"National":true}
-      if(!req.body.sort_by) req.body.end_date = "Victim's race"
+      if(!req.body.sort_by) req.body.sort_by = "Victim's race"
 
       next()
     }
