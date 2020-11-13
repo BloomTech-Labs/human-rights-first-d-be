@@ -7,7 +7,6 @@ const validate_us_demo_pie = [
   body('user_input')
   .isAlpha()
   .isLength({min:2, max:2})
-  .isUppercase()
 ]
 router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
   try {
@@ -18,8 +17,9 @@ router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
     }
 
     // get data from ds server
+    const us_state_abbreviation = req.body.user_input.toUpperCase() 
     const state_demographics = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_demo_pie`, {
-      user_input: req.body.user_input
+      user_input: us_state_abbreviation
     })).data
 
     //return DS server data to the client
