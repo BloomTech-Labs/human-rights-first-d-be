@@ -32,15 +32,14 @@ router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
 const validate_us_map = [
   body('start_date').isDate(),
   body('end_date').isDate(),
-  body('sort_by').isIn(['Armed/Unarmed', 'Demographic', 'Victim\'s gender']),
+  body('sort_by').isIn(['Armed/Unarmed', 'Demographic', 'Gender']),
 ]
 router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, next) => {
   try {
     //validate
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
-      console.log("inside errors")
-      return res.status(404).json({not_valid: 'Invalid input'})
+      return res.status(404).json({invalid_input: 'Invalid input'})
     }
 
     //get data from ds_server
