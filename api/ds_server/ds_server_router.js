@@ -74,7 +74,7 @@ const validate_us_bar = [
     .optional()
     .isArray()
     .isPostalCode('US'),
-  body('group_by.City')
+  body('group_by.City*')
     .optional()  
     .isArray()
     .isAlpha()
@@ -135,10 +135,10 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
 
     //get DS server data
     const pie = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
-      start_date: "2013-01-01",
-      end_date: "2020-01-01",
-      group_by: {"National":true},
-      sort_by: "Victim's race"
+      start_date: req.body.start_date,
+      end_date: req.body.end_date,
+      group_by: req.body.group_by,
+      sort_by: req.body.sort_by
     })
 
     // respond to client with the DS data
