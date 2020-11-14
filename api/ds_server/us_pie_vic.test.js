@@ -25,7 +25,6 @@ const url = '/ds_server/us_pie_vic'
       const res = await request(server).post(url).send({
         start_date: "01-01-2013",
         end_date: "01-01-2019",
-        group_by: {"National": "not a boolean"},
         sort_by: "not a valid sort_by option",
       })
       
@@ -37,6 +36,27 @@ const url = '/ds_server/us_pie_vic'
       expect(res.status).toBe(404)
     })
 
+    describe('group_by fail with invalid inputs', () => {
+      it('National', async () => {
+        const res = await request(server).post(url).send({
+        group_by: {"National": "not a boolean"},
+        })
+
+      const errors = JSON.stringify(res.body)
+      expect(errors).toMatch(/error/i)
+      expect(errors).toMatch(/National/i)
+      expect(res.status).toBe(404)
+
+      })
+      it('States 404 invalid input',async () => {
+        const res = request(server).post(url).send({
+          group_by: {States: "Not @ state"}
+        })
+
+        expect(il)
+      })
+      it.todo('City')
+    })
     
 
   })
