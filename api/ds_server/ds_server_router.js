@@ -76,6 +76,7 @@ const validate_us_bar = [
     .isPostalCode('US'),
   body('group_by.City')
     .optional()  
+    .isArray()
     .isAlpha()
     .isLength({min:4, max: 30}), 
   body('asc').isBoolean(),
@@ -107,24 +108,30 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
 const validate_us_pie_vic = [
   body('start_date').isDate(),
   body('end_date').isDate(),
-  body('group_by.National').optional().isBoolean(),
+  body('group_by.National')
+    .optional()
+    .isBoolean(),
   body('group_by.States')
     .optional()
     .isAlpha()
     .isLength({min:2, max:2})
     .isUppercase(),
-  body('group_by.City')
+  body('group_by.City*')
     .optional()
+    .isArray()
     .isAlpha()
     .isLength({min:4, max: 30}),
-  body('sort_by.Victim\s race')
-  .optional()
-  .isAlpha()
-  .isLength({min: 5, max: 30}),
-  body('asc').isBoolean(),
+  body('sort_by')
+  .isIn([`Victim's race`])
 ]
 router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async (req, res, next) => {
   try {
+    //validation
+    const errors = validationResult(req)
+    const is_errors = !errors.isEmpty()
+    if(is_errors){
+      return res.status(404).json(errors)
+    }
 
     //get DS server data
     const pie = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
