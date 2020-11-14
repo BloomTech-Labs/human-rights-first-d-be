@@ -106,8 +106,10 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
 })
 
 const validate_us_pie_vic = [
-  body('start_date').isDate(),
-  body('end_date').isDate(),
+  body('start_date')
+    .isDate(),
+  body('end_date')
+    .isDate(),
   body('group_by.National')
     .optional()
     .isBoolean(),
