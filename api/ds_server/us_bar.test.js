@@ -29,7 +29,14 @@ describe('/us_bar', () => {
     expect(res.status).toBe(200)
   })
 
-  it.todo(', check valid test for city')
+  // currect City endpoint is broken at the moment until forther notice
+  it('404 City input is currently borken until forther notice, should be 200 status', async () => {
+      const res = await request(server).post('/ds_server/us_bar').send({
+        group_by: {City: ["Atlanta,GA"]}
+      })
+
+      expect(res.status).toBe(404)
+  })
   it('404 check fail when gorup_by: zipcode is not an array, and asc is not bool', async () =>{
     const res = await request(server).post('/ds_server/us_bar').send({
       group_by: {Zipcode: 18201}
