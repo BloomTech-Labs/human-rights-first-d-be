@@ -72,6 +72,7 @@ const validate_us_bar = [
     .isUppercase(),
   body('group_by.Zipcode')
     .optional()
+    .isArray()
     .isPostalCode('US'),
   body('group_by.City')
     .optional()  
