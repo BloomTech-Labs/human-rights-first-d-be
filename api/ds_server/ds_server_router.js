@@ -45,7 +45,7 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
     //validate
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
-      return res.status(404).json({invalid_input: 'Invalid input'})
+      return res.status(404).json(errors.array())
     }
 
     //get data from ds_server
