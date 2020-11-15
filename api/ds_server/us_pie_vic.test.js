@@ -48,14 +48,46 @@ const url = '/ds_server/us_pie_vic'
       expect(res.status).toBe(404)
 
       })
-      it('States 404 invalid input',async () => {
-        const res = request(server).post(url).send({
-          group_by: {States: "Not @ state"}
+      it('States 404 not a array',async () => {
+        const res = await request(server).post(url).send({
+          group_by: {"States": "Not @ state"}
         })
 
-        expect(il)
+        const errors = JSON.stringify(res.body)
+        expect(errors).toMatch(/error/i)
+        expect(errors).toMatch(/States/i)
+        expect(res.status).toBe(404)
       })
-      it.todo('City')
+      it('States 404 array validation is apply', async () => {
+        const res = await request(server).post(url).send({
+          group_by: {"States": ['not a', "A"]}
+        })
+
+        expect(res.status).toBe(404)
+        const errors = JSON.stringify(res.body)
+        expect(errors).toMatch(/error/i)
+        expect(errors).toMatch(/States/i)
+      })
+      it('City 404 not a array', async () => {
+        const res = await request(server).post(url).send({
+          group_by: {City: 'Atlanta, Ga'}
+        })
+
+        expect(res.status).toBe(404)
+        const errors = JSON.stringify(res.body)
+        expect(errors).toMatch(/error/i)
+        expect(errors).toMatch(/City/i)
+      })
+      it('City 404 not a valid Alpha of 4-30 chart max', async () => {
+        const res = await request(server).post(url).send({
+          group_by: {City: ['not', 'this option is too long for passing validation. But just to make sure I will write this short paragraph.']}
+        })
+
+        expect(res.status).toBe(404)
+        const errors = JSON.stringify(res.body)
+        expect(errors).toMatch(/error/i)
+        expect(errors).toMatch(/City/i)
+      })
     })
     
 
@@ -75,7 +107,7 @@ describe('check all of group_by options are working', () => {
 
   it('200 City valid inputs', async () => {
       const res = await request(server).post(url).send({
-        group_by: { City: ["Atlanta, GA"]}
+        group_by: { City: ["Atlanta, Ga"]}
       })
       expect(res.body).toEqual(expect.any(String))
       expect(res.body).toMatch(/data/i)
