@@ -93,15 +93,17 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
     }
 
     // get data from DS server
-    const us_bar = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_bar`, {
+    const us_bar = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_bar`, {
         start_date: req.body.start_date,
         end_date: req.body.end_date,
         group_by: req.body.group_by,
         asc: req.body.asc
-      })
+      })).data
 
+    if(us_bar.Error) return res.status(404).json(us_bar)
+    
     // send DS data to cliet  
-    res.status(200).json(us_bar.data )
+    res.status(200).json(us_bar)
   } catch (error) {
     next(error)
   }
