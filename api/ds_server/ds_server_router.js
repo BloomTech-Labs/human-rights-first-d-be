@@ -74,9 +74,11 @@ const validate_us_bar = [
     .optional()
     .isArray()
     .isPostalCode('US'),
+  body('group_by.City')
+  .optional()
+  .isArray(),
   body('group_by.City*')
     .optional()  
-    .isArray()
     .isAlpha()
     .isLength({min:4, max: 30}), 
   body('asc').isBoolean(),
