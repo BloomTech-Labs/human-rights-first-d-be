@@ -113,9 +113,11 @@ const validate_us_pie_vic = [
   body('group_by.National')
     .optional()
     .isBoolean(),
+  body('group_by.States')
+  .optional()
+  .isArray(),
   body('group_by.States*')
     .optional()
-    .isArray()
     .isAlpha()
     .isLength({min:2, max:2})
     .isUppercase(),
@@ -135,6 +137,7 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
     if(is_errors){
       return res.status(404).json(errors)
     }
+    console.log(req.body.group_by.States)
     console.log('BEFORE axios got call')
 
     //get DS server data
@@ -146,7 +149,6 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
     })).data
 
     console.log('axios got call')
-    console.log(pie)
     // respond to client with the DS data
     res.status(200).json(pie)
   } catch (error) {
