@@ -108,7 +108,7 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
     const errors = validationResult(req)
     const is_errors = !errors.isEmpty()
     if(is_errors){
-      return res.status(404).json(errors)
+      return res.status(404).json(errors.array())
     }
 
     // get data from DS server
