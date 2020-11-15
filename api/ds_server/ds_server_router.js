@@ -5,8 +5,8 @@ const {body, validationResult} = require('express-validator')
 
 const validate_us_demo_pie = [
   body('user_input')
-  .isAlpha()
-  .isLength({min:2, max:2})
+  .isAlpha().withMessage('Must be letters')
+  .isLength({min:2, max:2}).withMessage('Must be 2 charts long')
 ]
 router.post('/us_demo_pie', default_value_us_demo_pie, validate_us_demo_pie, async (req, res, next) => {
   try {
@@ -33,13 +33,13 @@ router.post('/us_demo_pie', default_value_us_demo_pie, validate_us_demo_pie, asy
 
 const validate_us_map = [
   body('start_date')
-    .isDate()
+    .isDate().withMessage('Must be formated YYYY/MM/DD')
     ,
   body('end_date')
-    .isDate()
+    .isDate().withMessage('Must be formatedd YYYY/MM/DD')
     ,
   body('sort_by')
-    .isIn(['Armed/Unarmed', 'Demographic', 'Gender'])
+    .isIn(['Armed/Unarmed', 'Demographic', 'Gender']).withMessage('Must be Armed/Unarrmed. Demographic, or Gender')
     ,
 ]
 router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, next) => {
@@ -71,33 +71,38 @@ const validate_us_bar = [
   body('start_date').isDate(),
   body('end_date').isDate(),
   body('group_by.National')
-    .isBoolean()
-    .optional(),
+    .optional()
+    .isBoolean().withMessage('Must be a boolean.')
+    ,
   body('group_by.States')
     .optional()
-    .isArray()
+    .isArray().withMessage('States must be an array.')
     ,
   body('group_by.States[*]')
     .optional()  
-    .isAlpha()
-    .isLength({min:2, max:2})
-    .isUppercase(),
+    .isAlpha().withMessage('Must be letters.')
+    .isLength({min:2, max:2}).withMessage('Must be 2 characters long.')
+    .isUppercase().withMessage('Must be uppercase.')
+    ,
   body('group_by.Zipcode')
     .optional()
-    .isArray()
+    .isArray().withMessage('Zipcode must be an array.')
     ,
   body('group_by.Zipcode[*]')
   .optional()
-  .isPostalCode('US')
+  .isPostalCode('US').withMessage('Must be a zipcode.')
   ,
   body('group_by.City')
   .optional()
-  .isArray(),
+  .isArray().withMessage('City must be an array.')
+  ,
   body('group_by.City*')
     .optional()  
-    .isAlpha()
-    .isLength({min:4, max: 30}), 
-  body('asc').isBoolean(),
+    .isLength({min:4, max: 30}).withMessage('City inputs must be 4-30 characters long.')
+    , 
+  body('asc')
+    .isBoolean().withMessage('Asc must be a booleon.')
+    ,
 ]
 router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, next) => {
   try {
@@ -127,29 +132,35 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
 
 const validate_us_pie_vic = [
   body('start_date')
-    .isDate(),
+    .isDate().withMessage('Start Date must be YYYY/MM/DD')
+    ,
   body('end_date')
-    .isDate(),
+    .isDate().withMessage('End date must be YYYY/MM/DD')
+    ,
   body('group_by.National')
     .optional()
-    .isBoolean(),
+    .isBoolean().withMessage('National must be an boolean.')
+    ,
   body('group_by.States')
   .optional()
-  .isArray(),
+  .isArray().withMessage('States must be an array.')
+  ,
   body('group_by.States[*]')
     .optional()
-    .isAlpha()
-    .isLength({min:2, max:2})
-    .isUppercase(),
+    .isAlpha().withMessage('States must be letters')
+    .isLength({min:2, max:2}).withMessage('States must be 2 characters long')
+    .isUppercase().withMessage('States must be uppercase.')
+    ,
   body('group_by.City')
     .optional()
-    .isArray(),
+    .isArray().withMessage('City must be an array.')
+    ,
   body('group_by.City[*]')
     .optional()
-    .isLength({min:4, max: 30})
+    .isLength({min:4, max: 30}).withMessage('City inputs must be from 4-30 characters.')
     ,
   body('sort_by')
-  .isIn([`Victim's race`])
+  .isIn([`Victim's race`]).withMessage(`Sorty by must be Victim's race.`)
 ]
 router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async (req, res, next) => {
   try {
