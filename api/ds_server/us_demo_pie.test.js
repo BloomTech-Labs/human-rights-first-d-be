@@ -3,6 +3,12 @@ const server = require('../app')
 const request = require('supertest')
 
 describe('/us_demo_pie', () => {
+  it('defaul values 200 US', async () => {
+    const res = await request(server).post('/ds_server/us_demo_pie')
+
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual(expect.any(String))
+  })
   it('200 passing date to client with valid input',  async () => {
     const res = await request(server).post(`/ds_server/us_demo_pie`).send({
       user_input: "FL"
