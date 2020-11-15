@@ -118,7 +118,7 @@ const validate_us_pie_vic = [
   body('group_by.States')
   .optional()
   .isArray(),
-  body('group_by.States*')
+  body('group_by.States[*]')
     .optional()
     .isAlpha()
     .isLength({min:2, max:2})
