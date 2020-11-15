@@ -8,8 +8,10 @@ const validate_us_demo_pie = [
   .isAlpha()
   .isLength({min:2, max:2})
 ]
-router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
+router.post('/us_demo_pie', default_value_us_demo_pie, validate_us_demo_pie, async (req, res, next) => {
   try {
+    
+
     //validate inputs
     const errors = validationResult(req)
     if(!errors.isEmpty()){
@@ -198,6 +200,11 @@ router.get('/us_non_lethal_line', async (req, res, next) => {
 
 
 //local middleware
+function default_value_us_demo_pie(req, res, next){
+      // defaul value
+      if (!req.body.user_input) req.body.user_input = "US"
+      next()
+    }
 function default_values_us_pie_vic(req, res, next){
 
       //set defaul values
