@@ -123,11 +123,13 @@ const validate_us_pie_vic = [
     .isAlpha()
     .isLength({min:2, max:2})
     .isUppercase(),
-  body('group_by.City*')
+  body('group_by.City')
     .optional()
-    .isArray()
-    .isAlpha()
-    .isLength({min:4, max: 30}),
+    .isArray(),
+  body('group_by.City[*]')
+    .optional()
+    .isLength({min:4, max: 30})
+    ,
   body('sort_by')
   .isIn([`Victim's race`])
 ]
@@ -139,8 +141,6 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
     if(is_errors){
       return res.status(404).json(errors)
     }
-    console.log(req.body.group_by.States)
-    console.log('BEFORE axios got call')
 
     //get DS server data
     const pie = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
@@ -150,7 +150,6 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
       sort_by: req.body.sort_by
     })).data
 
-    console.log('axios got call')
     // respond to client with the DS data
     res.status(200).json(pie)
   } catch (error) {
