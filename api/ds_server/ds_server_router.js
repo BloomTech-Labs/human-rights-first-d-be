@@ -160,7 +160,7 @@ const validate_us_pie_vic = [
     .isLength({min:4, max: 30}).withMessage('City inputs must be from 4-30 characters.')
     ,
   body('sort_by')
-  .isIn([`Victim's race`]).withMessage(`Sorty by must be Victim's race.`)
+  .isIn(['Geography', 'Body Camera', 'Alleged Threat Level', 'Symptoms of mental illness?', 'Unarmed/Did Not Have an Actual Weapon', 'Alleged Weapon',`Victim's race`, `Victim's race`]).withMessage(`Sorty by must be Victim's race.`)
 ]
 router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async (req, res, next) => {
   try {
