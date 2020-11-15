@@ -30,12 +30,13 @@ describe('/us_bar', () => {
   })
 
   // currect City endpoint is broken at the moment until forther notice
-  it('404 City input is currently borken until forther notice, should be 200 status', async () => {
+  it('City 404 valid input but city has no accidents', async () => {
       const res = await request(server).post('/ds_server/us_bar').send({
-        group_by: {City: ["Atlanta,GA"]}
+        group_by: {City: ["Atlanta,Ga"]}
       })
 
       expect(res.status).toBe(404)
+      expect(res.body.Error).toMatch(/no incident/i)
   })
   it('404 check fail when gorup_by: zipcode is not an array, and asc is not bool', async () =>{
     const res = await request(server).post('/ds_server/us_bar').send({
