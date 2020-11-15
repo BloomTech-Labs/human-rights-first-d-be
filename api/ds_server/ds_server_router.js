@@ -113,8 +113,9 @@ const validate_us_pie_vic = [
   body('group_by.National')
     .optional()
     .isBoolean(),
-  body('group_by.States')
+  body('group_by.States*')
     .optional()
+    .isArray()
     .isAlpha()
     .isLength({min:2, max:2})
     .isUppercase(),
@@ -134,17 +135,20 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
     if(is_errors){
       return res.status(404).json(errors)
     }
+    console.log('BEFORE axios got call')
 
     //get DS server data
-    const pie = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
+    const pie = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
       start_date: req.body.start_date,
       end_date: req.body.end_date,
       group_by: req.body.group_by,
       sort_by: req.body.sort_by
-    })
+    })).data
 
+    console.log('axios got call')
+    console.log(pie)
     // respond to client with the DS data
-    res.status(200).json(pie.data)
+    res.status(200).json(pie)
   } catch (error) {
     next(error)
   }
