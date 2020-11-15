@@ -7,19 +7,21 @@ const validate_us_demo_pie = [
   body('user_input')
   .isAlpha()
   .isLength({min:2, max:2})
-  .isUppercase()
 ]
-router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
+router.post('/us_demo_pie', default_value_us_demo_pie, validate_us_demo_pie, async (req, res, next) => {
   try {
+    
+
     //validate inputs
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-      return res.status(404).json({ errors: 'Invalid state abbreviation. Must be 2 characters, and all capitalize.'})
+      return res.status(404).json({ invalid_input: 'Invalid state abbreviation. Must be 2 characters, and all capitalize.'})
     }
 
     // get data from ds server
+    const us_state_abbreviation = req.body.user_input.toUpperCase() 
     const state_demographics = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_demo_pie`, {
-      user_input: req.body.user_input
+      user_input: us_state_abbreviation
     })).data
 
     //return DS server data to the client
@@ -30,17 +32,22 @@ router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
 })
 
 const validate_us_map = [
-  body('start_date').isDate(),
-  body('end_date').isDate(),
-  body('sort_by').isIn(['Armed/Unarmed', 'Demographic', 'Victim\'s gender']),
+  body('start_date')
+    .isDate()
+    ,
+  body('end_date')
+    .isDate()
+    ,
+  body('sort_by')
+    .isIn(['Armed/Unarmed', 'Demographic', 'Gender'])
+    ,
 ]
 router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, next) => {
   try {
     //validate
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
-      console.log("inside errors")
-      return res.status(404).json({not_valid: 'Invalid input'})
+      return res.status(404).json({invalid_input: 'Invalid input'})
     }
 
     //get data from ds_server
@@ -63,14 +70,30 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
 const validate_us_bar = [
   body('start_date').isDate(),
   body('end_date').isDate(),
-  body('group_by.National').isBoolean(),
+  body('group_by.National')
+    .isBoolean()
+    .optional(),
   body('group_by.States')
+    .optional()
+    .isArray()
+    ,
+  body('group_by.States[*]')
     .optional()  
     .isAlpha()
     .isLength({min:2, max:2})
     .isUppercase(),
-  body('group_by.Zipcode').optional().isPostalCode('US'),
+  body('group_by.Zipcode')
+    .optional()
+    .isArray()
+    ,
+  body('group_by.Zipcode[*]')
+  .optional()
+  .isPostalCode('US')
+  ,
   body('group_by.City')
+  .optional()
+  .isArray(),
+  body('group_by.City*')
     .optional()  
     .isAlpha()
     .isLength({min:4, max: 30}), 
@@ -83,57 +106,70 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
     const is_errors = !errors.isEmpty()
     if(is_errors){
       return res.status(404).json(errors)
-      // return res.status(404).json({invalid_input: "Invalid input"})
     }
 
-    
     // get data from DS server
-    const us_bar = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_bar`, {
+    const us_bar = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_bar`, {
         start_date: req.body.start_date,
         end_date: req.body.end_date,
         group_by: req.body.group_by,
         asc: req.body.asc
-      })
+      })).data
+
+    if(us_bar.Error) return res.status(404).json(us_bar)
 
     // send DS data to cliet  
-    res.status(200).json(us_bar.data )
+    res.status(200).json(us_bar)
   } catch (error) {
     next(error)
   }
 })
 
 const validate_us_pie_vic = [
-  body('start_date').isDate(),
-  body('end_date').isDate(),
-  body('group_by.National').optional().isBoolean(),
+  body('start_date')
+    .isDate(),
+  body('end_date')
+    .isDate(),
+  body('group_by.National')
+    .optional()
+    .isBoolean(),
   body('group_by.States')
+  .optional()
+  .isArray(),
+  body('group_by.States[*]')
     .optional()
     .isAlpha()
     .isLength({min:2, max:2})
     .isUppercase(),
   body('group_by.City')
     .optional()
-    .isAlpha()
-    .isLength({min:4, max: 30}),
-  body('sort_by.Victim\s race')
-  .optional()
-  .isAlpha()
-  .isLength({min: 5, max: 30}),
-  body('asc').isBoolean(),
+    .isArray(),
+  body('group_by.City[*]')
+    .optional()
+    .isLength({min:4, max: 30})
+    ,
+  body('sort_by')
+  .isIn([`Victim's race`])
 ]
 router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async (req, res, next) => {
   try {
+    //validation
+    const errors = validationResult(req)
+    const is_errors = !errors.isEmpty()
+    if(is_errors){
+      return res.status(404).json(errors)
+    }
 
     //get DS server data
-    const pie = await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
-      start_date: "2013-01-01",
-      end_date: "2020-01-01",
-      group_by: {"National":true},
-      sort_by: "Victim's race"
-    })
+    const pie = (await axios.post(`http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_pie_vic`, {
+      start_date: req.body.start_date,
+      end_date: req.body.end_date,
+      group_by: req.body.group_by,
+      sort_by: req.body.sort_by
+    })).data
 
     // respond to client with the DS data
-    res.status(200).json(pie.data)
+    res.status(200).json(pie)
   } catch (error) {
     next(error)
   }
@@ -142,10 +178,10 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
 router.get('/us_non_lethal', async (req, res, next) => {
   try {
     //collect data from the DS team server
-    const ds_res = await axios.get('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal')
+    const ds_res = (await axios.get('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_non_lethal')).data
 
     //return ds Plotly data to client 
-    res.status(200).json(ds_res.data)
+    res.status(200).json(ds_res)
   } catch (error) {
     next(error)
   }
@@ -164,6 +200,11 @@ router.get('/us_non_lethal_line', async (req, res, next) => {
 
 
 //local middleware
+function default_value_us_demo_pie(req, res, next){
+      // defaul value
+      if (!req.body.user_input) req.body.user_input = "US"
+      next()
+    }
 function default_values_us_pie_vic(req, res, next){
 
       //set defaul values
