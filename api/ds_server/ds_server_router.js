@@ -66,6 +66,10 @@ const validate_us_bar = [
     .isBoolean()
     .optional(),
   body('group_by.States')
+    .optional()
+    .isArray()
+    ,
+  body('group_by.States[*]')
     .optional()  
     .isAlpha()
     .isLength({min:2, max:2})
@@ -73,7 +77,11 @@ const validate_us_bar = [
   body('group_by.Zipcode')
     .optional()
     .isArray()
-    .isPostalCode('US'),
+    ,
+  body('group_by.Zipcode[*]')
+  .optional()
+  .isPostalCode('US')
+  ,
   body('group_by.City')
   .optional()
   .isArray(),
@@ -101,7 +109,7 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
       })).data
 
     if(us_bar.Error) return res.status(404).json(us_bar)
-    
+
     // send DS data to cliet  
     res.status(200).json(us_bar)
   } catch (error) {
