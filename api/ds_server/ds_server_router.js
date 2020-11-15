@@ -30,9 +30,15 @@ router.post('/us_demo_pie', validate_us_demo_pie, async (req, res, next) => {
 })
 
 const validate_us_map = [
-  body('start_date').isDate(),
-  body('end_date').isDate(),
-  body('sort_by').isIn(['Armed/Unarmed', 'Demographic', 'Gender']),
+  body('start_date')
+    .isDate()
+    ,
+  body('end_date')
+    .isDate()
+    ,
+  body('sort_by')
+    .isIn(['Armed/Unarmed', 'Demographic', 'Gender'])
+    ,
 ]
 router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, next) => {
   try {
