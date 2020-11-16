@@ -166,7 +166,7 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
     const errors = validationResult(req)
     const is_errors = !errors.isEmpty()
     if(is_errors){
-      return res.status(404).json(errors)
+      return res.status(404).json(errors.array())
     }
 
     //get DS server data
