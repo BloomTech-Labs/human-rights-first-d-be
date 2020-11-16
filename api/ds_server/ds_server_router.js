@@ -234,7 +234,7 @@ function default_values_us_bar(req, res, next){
       if (is_no_start_date) req.body.start_date = "2013-01-01"
       if (is_no_end_date) req.body.end_date = "2019-01-01"
       if (is_no_group_by) req.body.group_by = {National: true}
-      if (is_no_asc) req.body.asc = true
+      if (is_no_asc) req.body.asc = false
 
       next()
     }
