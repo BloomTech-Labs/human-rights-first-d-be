@@ -31,10 +31,10 @@ router.post('/us_demo_pie', default_value_us_demo_pie, validate_us_demo_pie, asy
 
 const validate_us_map = [
   body('start_date')
-    .isDate().withMessage('Must be formated YYYY/MM/DD')
+    .isDate().withMessage('Must be YYYY/MM/DD')
     ,
   body('end_date')
-    .isDate().withMessage('Must be formatedd YYYY/MM/DD')
+    .isDate().withMessage('Must be YYYY/MM/DD')
     ,
   body('sort_by')
     .isIn(['Armed/Unarmed', 'Demographic', 'Gender']).withMessage('Must be Armed/Unarrmed. Demographic, or Gender')
