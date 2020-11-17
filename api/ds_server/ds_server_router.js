@@ -66,8 +66,12 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
 })
 
 const validate_us_bar = [
-  body('start_date').isDate(),
-  body('end_date').isDate(),
+  body('start_date')
+    .isDate().withMessage('Must be YYYY/MM/DD')
+    ,
+  body('end_date')
+    .isDate().withMessage('Must be YYYY/MM/DD')
+    ,
   body('group_by.National')
     .optional()
     .isBoolean().withMessage('Must be a boolean.')
