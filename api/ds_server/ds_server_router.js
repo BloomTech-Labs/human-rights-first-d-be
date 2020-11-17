@@ -224,6 +224,12 @@ const validate_top_x_list = [
 ]
 router.post('/top_x_list', default_values_top_x_list, validate_top_x_list, async (req, res, next) => {
   try {
+    //validation
+    const errors = validationResult(req)
+    const is_errors = !errors.isEmpty()
+    if(is_errors){
+      return res.status(404).json(errors.array())
+    }
 
     // use inputs to on axios  
     const ds_data = (await axios.post('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/top_x_list', {
