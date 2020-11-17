@@ -211,8 +211,49 @@ router.get('/us_non_lethal_line', async (req, res, next) => {
   }
 } )
 
+const validate_top_x_list = [
+  body('dataset')
+    .isIn(['PViolence', 'Killings']).withMessage('Must be PViolence or Killings')
+    ,
+  body('filter')
+    .isIn(['State', 'City']).withMessage('Must be State or City')
+    ,
+  body('count')
+    .isInt().withMessage('Count must be an interger')
+    ,
+]
+router.post('/top_x_list', default_values_top_x_list, validate_top_x_list, async (req, res, next) => {
+  try {
+
+    // use inputs to on axios  
+    const ds_data = (await axios.post('http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/top_x_list', {
+      dataset: req.body.dataset,
+      filter: req.body.filter,
+      count: req.body.count,
+    }).data )
+
+    //responde with ds_data to client
+    res.status(200).json(ds_data)
+  } catch (error) {
+    next(error)
+  }
+})
 
 //local middleware
+function default_values_top_x_list(req, res, next){
+  //check if there is no input given
+  const no_dataset = !req.body.dataset
+  const no_filter = !req.body.filter
+  const no_count = !req.body.count
+
+  //default values
+  if(no_dataset) req.body.dataset = 'PViolence'
+  if(no_filter) req.body.filter = 'State'
+  if(no_count) req.body.count = 20
+
+  //go to next middleware
+  next()
+}
 function default_value_us_demo_pie(req, res, next){
       // defaul value
       if (!req.body.user_input) req.body.user_input = "US"
