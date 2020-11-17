@@ -1,5 +1,5 @@
 //imports
-const server = require('../app')
+const server = require('../../app')
 const request = require('supertest')
 
 describe('/us_map/', () => {
@@ -38,23 +38,26 @@ describe('/us_map/', () => {
       start_date: '01-01-2013',
     })
 
+    const errors = JSON.stringify(res.body)
     expect(res.status).toBe(404)
-    expect(res.body.invalid_input).toEqual(expect.any(String))
+    expect(errors).toMatch(/Must be YYYY\/MM\/DD/i)
   })
   it('404 incorrect end_date', async () => {
     const res = await request(server).post('/ds_server/us_map').send({
       end_date: '01-01-2019'
     })
 
+    const errors = JSON.stringify(res.body)
     expect(res.status).toBe(404)
-    expect(res.body.invalid_input).toEqual(expect.any(String))
+    expect(errors).toMatch(/Must be YYYY\/MM\/DD/i)
   })
   it('404 invalid sort_by not one of the options', async () => {
     const res = await request(server).post('/ds_server/us_map').send({
       sort_by: 'not one of the valid options'
     })
 
+    const errors = JSON.stringify(res.body)
     expect(res.status).toBe(404)
-    expect(res.body.invalid_input).toEqual(expect.any(String))
+    expect(errors).toMatch(/Must be Armed\/Unarrmed. Demographic, or Gender/i)
   })
 })
