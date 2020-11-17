@@ -1,5 +1,5 @@
 //libraries
-const server = require('../app')
+const server = require('../../app')
 const request = require('supertest')
 
 
