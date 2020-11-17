@@ -10,12 +10,10 @@ const validate_us_demo_pie = [
 ]
 router.post('/us_demo_pie', default_value_us_demo_pie, validate_us_demo_pie, async (req, res, next) => {
   try {
-    
-
     //validate inputs
     const errors = validationResult(req)
     if(!errors.isEmpty()){
-      return res.status(404).json({ invalid_input: 'Invalid state abbreviation. Must be 2 characters, and all capitalize.'})
+      return res.status(404).json(errors.array())
     }
 
     // get data from ds server
@@ -47,7 +45,7 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
     //validate
     const errors = validationResult(req)
     if(!errors.isEmpty()) {
-      return res.status(404).json({invalid_input: 'Invalid input'})
+      return res.status(404).json(errors.array())
     }
 
     //get data from ds_server
@@ -110,7 +108,7 @@ router.post('/us_bar', default_values_us_bar, validate_us_bar, async (req, res, 
     const errors = validationResult(req)
     const is_errors = !errors.isEmpty()
     if(is_errors){
-      return res.status(404).json(errors)
+      return res.status(404).json(errors.array())
     }
 
     // get data from DS server
@@ -168,7 +166,7 @@ router.post('/us_pie_vic', default_values_us_pie_vic, validate_us_pie_vic, async
     const errors = validationResult(req)
     const is_errors = !errors.isEmpty()
     if(is_errors){
-      return res.status(404).json(errors)
+      return res.status(404).json(errors.array())
     }
 
     //get DS server data
