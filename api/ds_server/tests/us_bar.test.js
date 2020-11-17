@@ -1,5 +1,5 @@
 //libraries
-const server = require('../app')
+const server = require('../../app')
 const request = require('supertest')
 
 
@@ -36,7 +36,9 @@ describe('/us_bar', () => {
       })
 
       expect(res.status).toBe(404)
-      expect(res.body.Error).toMatch(/no incident/i)
+
+      const error = JSON.stringify(res.body)
+      expect(error).toMatch(/no incident/i)
   })
   it('404 check fail when gorup_by: zipcode is not an array, and asc is not bool', async () =>{
     const res = await request(server).post('/ds_server/us_bar').send({
@@ -44,5 +46,8 @@ describe('/us_bar', () => {
     })
 
     expect(res.status).toBe(404)
+    
+    const errors = JSON.stringify(res.body)
+    expect(errors).toMatch(/must be an array/i)
   })
 })

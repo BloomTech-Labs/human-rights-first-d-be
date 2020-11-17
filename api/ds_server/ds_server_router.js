@@ -1,6 +1,6 @@
 // libraries
-const axios = require('axios');
-const router = require('express').Router();
+const axios = require('axios')
+const router = require('express').Router()
 const {body, validationResult} = require('express-validator')
 
 const validate_us_demo_pie = [
@@ -31,10 +31,10 @@ router.post('/us_demo_pie', default_value_us_demo_pie, validate_us_demo_pie, asy
 
 const validate_us_map = [
   body('start_date')
-    .isDate().withMessage('Must be formated YYYY/MM/DD')
+    .isDate().withMessage('Must be YYYY/MM/DD')
     ,
   body('end_date')
-    .isDate().withMessage('Must be formatedd YYYY/MM/DD')
+    .isDate().withMessage('Must be YYYY/MM/DD')
     ,
   body('sort_by')
     .isIn(['Armed/Unarmed', 'Demographic', 'Gender']).withMessage('Must be Armed/Unarrmed. Demographic, or Gender')
@@ -49,25 +49,29 @@ router.post('/us_map', default_values_us_map, validate_us_map, async (req, res, 
     }
 
     //get data from ds_server
-    let incidents_rate = await axios.post(
+    let incidents_rate = (await axios.post(
       `http://hrf-ds16.eba-fmbjvhg4.us-east-1.elasticbeanstalk.com/us_map`,
       {
         start_date: req.body.start_date,
         end_date: req.body.end_date,
         sort_by: req.body.sort_by,
       }
-    );
+    )).data
 
     //return send ds_server data
-    res.status(200).json(incidents_rate.data);
+    res.status(200).json(incidents_rate)
   } catch (error) {
-    next(error);
+    next(error)
   }
-});
+})
 
 const validate_us_bar = [
-  body('start_date').isDate(),
-  body('end_date').isDate(),
+  body('start_date')
+    .isDate().withMessage('Must be YYYY/MM/DD')
+    ,
+  body('end_date')
+    .isDate().withMessage('Must be YYYY/MM/DD')
+    ,
   body('group_by.National')
     .optional()
     .isBoolean().withMessage('Must be a boolean.')
@@ -244,10 +248,10 @@ function default_values_us_map(req,res,next){
       const is_no_start_date = !req.body.start_date
       const is_no_end_date = !req.body.end_date
       const is_no_sort_by = !req.body.sort_by
-      if(is_no_start_date) req.body.start_date = "2013-01-01";
-      if(is_no_end_date) req.body.end_date = "2019-01-01";
-      if(is_no_sort_by) req.body.sort_by = "Demographic";
+      if(is_no_start_date) req.body.start_date = "2013-01-01"
+      if(is_no_end_date) req.body.end_date = "2019-01-01"
+      if(is_no_sort_by) req.body.sort_by = "Demographic"
       next()
     }
 
-module.exports = router;
+module.exports = router

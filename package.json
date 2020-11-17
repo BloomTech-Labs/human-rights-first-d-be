@@ -12,7 +12,7 @@
     "lint:fix": "npx eslint --fix .",
     "format": "npx prettier --write \"**/*.+(js|jsx|json|yml|yaml|css|md)\"",
     "knex": "npx knex --knexfile config/knexfile.js",
-    "test": "cross-env NODE_ENV=testing jest api/ds_server --watch --verbose ",
+    "test": "cross-env NODE_ENV=testing jest api/ds_server/tests/ --watch --verbose ",
     "coverage": "CI=true npx jest --coverage --detectOpenHandles --forceExit"
   },
   "jest": {

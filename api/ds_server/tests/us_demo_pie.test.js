@@ -1,5 +1,5 @@
 //imports
-const server = require('../app')
+const server = require('../../app')
 const request = require('supertest')
 
 describe('/us_demo_pie', () => {
@@ -22,16 +22,17 @@ describe('/us_demo_pie', () => {
     const res = await request(server).post('/ds_server/us_demo_pie').send({
       user_input: "11"
     })
-    
+    const errors = JSON.stringify(res.body)
     expect(res.status).toBe(404)
-    expect(res.body.invalid_input).toEqual(expect.any(String))
+    expect(errors).toMatch(/must be letters/i)
   })
   it('404 input is length is not 2', async () => {
     const res = await request(server).post('/ds_server/us_demo_pie').send({
       user_input: "FLO"
     })
     
+    const errors = JSON.stringify(res.body)
     expect(res.status).toBe(404)
-    expect(res.body.invalid_input).toEqual(expect.any(String))
+    expect(errors).toMatch(/must be 2 charts/i)
   })
 })

@@ -1,5 +1,5 @@
 //libraries
-const server = require('../app')
+const server = require('../../app')
 const request = require('supertest')
 const url = '/ds_server/us_pie_vic'
   it('200 default values return Plotly data', async () => {
@@ -29,7 +29,6 @@ const url = '/ds_server/us_pie_vic'
       })
       
       const errors = JSON.stringify(res.body)
-      expect(errors).toMatch(/error/i)
       expect(errors).toMatch(/start_date/i)
       expect(errors).toMatch(/end_date/i)
       expect(errors).toMatch(/sort_by/i)
@@ -43,7 +42,6 @@ const url = '/ds_server/us_pie_vic'
         })
 
       const errors = JSON.stringify(res.body)
-      expect(errors).toMatch(/error/i)
       expect(errors).toMatch(/National/i)
       expect(res.status).toBe(404)
 
@@ -54,7 +52,6 @@ const url = '/ds_server/us_pie_vic'
         })
 
         const errors = JSON.stringify(res.body)
-        expect(errors).toMatch(/error/i)
         expect(errors).toMatch(/States/i)
         expect(res.status).toBe(404)
       })
@@ -65,7 +62,6 @@ const url = '/ds_server/us_pie_vic'
 
         expect(res.status).toBe(404)
         const errors = JSON.stringify(res.body)
-        expect(errors).toMatch(/error/i)
         expect(errors).toMatch(/States/i)
       })
       it('City 404 not a array', async () => {
@@ -75,7 +71,6 @@ const url = '/ds_server/us_pie_vic'
 
         expect(res.status).toBe(404)
         const errors = JSON.stringify(res.body)
-        expect(errors).toMatch(/error/i)
         expect(errors).toMatch(/City/i)
       })
       it('City 404 not a valid Alpha of 4-30 chart max', async () => {
@@ -85,7 +80,6 @@ const url = '/ds_server/us_pie_vic'
 
         expect(res.status).toBe(404)
         const errors = JSON.stringify(res.body)
-        expect(errors).toMatch(/error/i)
         expect(errors).toMatch(/City/i)
       })
     })
