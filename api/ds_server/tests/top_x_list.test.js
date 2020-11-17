@@ -9,10 +9,18 @@ describe('200 status', () => {
         const res = await request(server).post(url)
 
         expect(res.status).toBe(200)
-        expect(res.body).toMatch(/data/i)
-        expect(res.body).toMatch(/layout/i)
+        expect(res.body).toEqual(expect.any(String))
     })
-    it.todo('check last remaing options')
+    it('check last remaing options', async () =>{
+        const res = await request(server).post(url).send({
+            dataset: 'Killings',
+            filter: 'City',
+            count: 100,
+        })
+
+        expect(res.status).toBe(200)
+        expect(res.body).toEqual(expect.any(String))
+    })
 })
 
 describe('404 status', () => {
