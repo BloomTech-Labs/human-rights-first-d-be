@@ -236,7 +236,7 @@ router.post('/top_x_list', default_values_top_x_list, validate_top_x_list, async
       dataset: req.body.dataset,
       filter: req.body.filter,
       count: req.body.count,
-    }).data )
+    })).data
 
     //responde with ds_data to client
     res.status(200).json(ds_data)
