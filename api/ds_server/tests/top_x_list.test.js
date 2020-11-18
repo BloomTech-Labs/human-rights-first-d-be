@@ -20,7 +20,6 @@ describe('200 status', () => {
 
         expect(res.status).toBe(200)
         expect(res.body).toEqual(expect.any(String))
-        console.log(res.body)
     })
 })
 
