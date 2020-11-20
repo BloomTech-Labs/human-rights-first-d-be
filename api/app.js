@@ -53,4 +53,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ err })
 })
 
+// Welcome message
+app.get('/', async (req, res) => {
+  res.send('<h1> Server is live</h1> <a href="https://documenter.getpostman.com/view/11996006/TVeiCqJq">Postman Documentation</a> <a href="https://github.com/Lambda-School-Labs/human-rights-first-d-be">Github repo</a>')
+})
+
 module.exports = app
